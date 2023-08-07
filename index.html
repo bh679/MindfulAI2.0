@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html data-wf-domain="">
+    <head>
+    </head>
+    <body class="body">
+        
+        <!-- Input field for the OpenAI API key -->
+        <label for="apiKey">OpenAI API Key:</label>
+        <input type="password" id="apiKey">
+
+        <!-- Button to start and stop recording -->
+        <button id="recordButton">Start Recording</button>
+
+        <!-- Divs to display the status message and the transcription -->
+        <div id="statusMessage"></div>
+        <div id="transcription"></div>
+
+        <script>
+            // Initialize the array to hold the audio chunks, the MediaRecorder object and audio size
+            let chunks = [];
+            let recorder;
+            let audioSize = 0;
+
+            // Get the elements from the page
+            const apiKeyInput = document.getElementById('apiKey');
+            const recordButton = document.getElementById('recordButton');
+            const statusMessage = document.getElementById('statusMessage');
+            const transcriptionDiv = document.getElementById('transcription');
+
+            // When the record button is clicked
+            recordButton.onclick = function() {
+                // Check if we're currently recording
+                if (recorder && recorder.state === 'recording') {
+                    // Update the status message before stopping the recording
+                    statusMessage.innerText = 'Stopped recording. Audio file size: ' + audioSize.toFixed(2) + ' KB';
+                    // Stop the recording
+                    recorder.stop();
+                    recordButton.innerText = 'Start Recording';
+                } else {
+                    // Request permissions and start recording
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(stream => {
+                            recorder = new MediaRecorder(stream);
+                            // Setup the data handling
+                            recorder.ondataavailable = e => {
+                                chunks.push(e.data);
+                                audioSize += e.data.size / 1024;  // convert bytes to kilobytes
+                            };
+                            recorder.onstop = sendDataToOpenAI;
+                            // Start the recording
+                            recorder.start();
+                            recordButton.innerText = 'Stop Recording';
+                            statusMessage.innerText = 'Recording';
+                        })
+                        .catch(() => {
+                            statusMessage.innerText = 'Microphone not accessed';
+                        });
+                }
+            };
+
+            function sendDataToOpenAI() {
+                const blob = new Blob(chunks, { type: 'audio/wav' });
+                const file = new File([blob], 'audio.wav', { type: 'audio/wav' });
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('model', 'whisper-1');
+                fetch('https://api.openai.com/v1/audio/transcriptions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + apiKeyInput.value
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    // Check if the response was successful
+                    if (!response.ok) {
+                        // If not, throw an error with the status
+                        throw new Error('OpenAI API responded with status ' + response.status);
+                    }
+                    // If the response was successful, parse it as JSON
+                    return response.json();
+                })
+                .then(data => {
+                    // Update the status message with the processing status
+                    statusMessage.innerText = data.processing_description + '. Audio file size: ' + audioSize.toFixed(2) + ' KB';
+                    // If the transcription is completed, update the transcription div
+                    if (data.status === 'completed') {
+                        transcriptionDiv.innerText = data.transcription;
+                    } else {
+                        // If the transcription is not completed, wait for 1 second and then poll the status
+                        setTimeout(() => pollTranscriptionStatus(data.id), 1000);
+                    }
+                })
+                .catch(error => {
+                    // If an error occurred, update the status message
+                    statusMessage.innerText = 'Error: ' + error.message;
+                });
+            }
+
+            function pollTranscriptionStatus(id) {
+                fetch(`https://api.openai.com/v1/audio/transcriptions/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + apiKeyInput.value
+                    }
+                })
+                .then(response => {
+                    // Check if the response was successful
+                    if (!response.ok) {
+                        // If not, throw an error with the status
+                        throw new Error('OpenAI API responded with status ' + response.status);
+                    }
+                    // If the response was successful, parse it as JSON
+                    return response.json();
+                })
+                .then(data => {
+                    // Update the status message with the processing status
+                    statusMessage.innerText = data.processing_description + '. Audio file size: ' + audioSize.toFixed(2) + ' KB';
+                    // If the transcription is completed, update the transcription div
+                    if (data.status === 'completed') {
+                        transcriptionDiv.innerText = data.transcription;
+                    } else {
+                        // If the transcription is not completed, wait for 1 second and then poll the status again
+                        setTimeout(() => pollTranscriptionStatus(id), 1000);
+                    }
+                })
+                .catch(error => {
+                    // If an error occurred, update the status message
+                    statusMessage.innerText = 'Error: ' + error.message;
+                });
+            }
+        </script>
+    </body>
+</html>
