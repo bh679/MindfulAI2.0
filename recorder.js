@@ -1,7 +1,7 @@
 //https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52
 class Recorder {
     constructor(apiKeyInput, statusMessage) {
-        this.chunks = [];
+        this.chunk = null;
         this.recorder = null;
         this.audioSize = 0;
         this.transcriptionId = null;  // Initialize the transcription ID
@@ -26,10 +26,15 @@ class Recorder {
                     
                     // Setup the data handling
                     this.recorder.ondataavailable = e => {
-                        this.chunks.push(e.data);
-                        this.audioSize += e.data.size / 1024;  // convert bytes to kilobytes
+                        this.chunk = e.data;
+                        this.audioSize = e.data.size / 1024;  // convert bytes to kilobytes
                     };
-                    this.recorder.onstop = () => onStopCallback(this.chunks);;
+                    this.recorder.onstop = () => {
+                        onStopCallback(this.chunk);
+                        // Reset chunk and audioSize after each recording
+                        this.chunk = null;
+                        this.audioSize = 0;
+                    };
                     
                     // Start the recording
                     this.recorder.start();

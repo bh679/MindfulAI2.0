@@ -45,17 +45,67 @@
                     
                 }
 
-                async function FinishRecording(recordingChunks)
+                async function FinishRecording(recordingChunk)
                 {
                     //update button
                     recordButton.innerText = 'Start Recording';
 
                     //transcribe results
-                    var transcript = await transcriber.transcribeAudio(recordingChunks);
+                    var transcript = await transcribe(recordingChunk);
 
                     //save transcription
                     transcriptionDiv.innerText = transcript;
                 }
+
+                const apiDomain = 'https://brennan.games:3000';
+
+                // Define the transcribe function, which sends audio chunks to the Whisper API and fetches the transcription
+                async function transcribe(chunk) {
+                    // Log the chunks data to the console for debugging purposes
+                    console.log(chunks);
+
+                    // Create a new Blob object from the first chunk (which should contain the audio data)
+                    const audioData = new Blob([chunk, { type: 'audio/webm' });
+
+                    // Create a new FormData object
+                    const formData = new FormData();
+
+                    // Append the Blob object to the FormData object under the key 'file'
+                    formData.append('file', audioData, 'audio.wav');
+
+                    // Send a POST request to the Whisper API with the FormData object in the body
+                    const response = await fetch(apiDomain + '/Transcribe', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    // If the response status is not OK (200), throw an error with the status
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    // Parse the response body as JSON
+                    const data = await response.json();
+
+                    // If the transcription is still processing, throw an error
+                    if (data.message === 'Transcription is still processing') {
+                        throw new Error('Transcription is still processing');
+                    }
+
+                    // If there was an error during transcription, throw an error with the error message
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+
+                    // Log the transcription to the console for debugging purposes
+                    console.log(`Transcription: ${data.transcription}`);
+
+                    // Return the transcription
+                    return data.transcription;
+                }
+
+
+
 
             };
         </script>
