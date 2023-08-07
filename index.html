@@ -25,10 +25,10 @@
                 const transcriptionDiv = document.getElementById('transcription');
 
                 // Create a new Recorder object
-                const recorder = new Recorder(apiKeyInput, recordButton, statusMessage, transcriptionDiv);
+                const recorder = new Recorder(apiKeyInput, statusMessage);
 
                 // Create a new Transcriber object
-                const transcriber = new Transcriber(apiKeyInput, statusMessage, transcriptionDiv);
+                const transcriber = new Transcriber(apiKeyInput, statusMessage);
 
                 // When the record button is clicked
                 recordButton.onclick = function() {
@@ -36,17 +36,24 @@
                 };
 
                 async function RecordToText() {
+
+                    recordButton.innerText = 'Stop Recording';
+
+                    //start/stop reocrding
+                    recorder.toggleRecording(FinishRecording);
                     
-                    if (recorder.recorder && recorder.recorder.state === 'recording') {
-                        recorder.stopRecording();
-                    } else {
-                        recorder.recordAudio().then(chunks => {
-                            transcriber.transcribeAudio(chunks).then(transcription => {
-                                console.log(transcription);
-                            });
-                        });
-                    }
-                    
+                }
+
+                async function FinishRecording(recordingChunks)
+                {
+                    //update button
+                    recordButton.innerText = 'Start Recording';
+
+                    //transcribe results
+                    var transcript = await transcriber.transcribeAudio(recordingChunks);
+
+                    //save transcription
+                    transcriptionDiv.innerText = transcript;
                 }
 
             };
