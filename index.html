@@ -15,5 +15,28 @@
         <!-- Divs to display the status message and the transcription -->
         <div id="statusMessage"></div>
         <div id="transcription"></div>
+
+        <script>
+            window.onload = function() {
+                // Get the elements from the page
+                const apiKeyInput = document.getElementById('apiKey');
+                const recordButton = document.getElementById('recordButton');
+                const statusMessage = document.getElementById('statusMessage');
+                const transcriptionDiv = document.getElementById('transcription');
+
+                // Create a new Recorder object
+                const recorder = new Recorder(apiKeyInput, recordButton, statusMessage, transcriptionDiv);
+
+                // Create a new Transcriber object
+                const transcriber = new Transcriber(apiKeyInput, statusMessage, transcriptionDiv);
+
+                // When the record button is clicked
+                recordButton.onclick = function() {
+                    recorder.toggleRecording(function() {
+                        transcriber.sendDataToOpenAI(recorder.chunks, recorder.audioSize);
+                    });
+                };
+            };
+        </script>
     </body>
 </html>
