@@ -32,10 +32,23 @@
 
                 // When the record button is clicked
                 recordButton.onclick = function() {
-                    recorder.toggleRecording(function() {
-                        transcriber.sendDataToOpenAI(recorder.chunks, recorder.audioSize);
-                    });
+                    RecordToText();
                 };
+
+                async function RecordToText() {
+                    
+                    if (recorder.recorder && recorder.recorder.state === 'recording') {
+                        recorder.stopRecording();
+                    } else {
+                        recorder.recordAudio().then(chunks => {
+                            transcriber.transcribeAudio(chunks).then(transcription => {
+                                console.log(transcription);
+                            });
+                        });
+                    }
+                    
+                }
+
             };
         </script>
     </body>
