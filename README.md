@@ -10,6 +10,6 @@ Built using Node JS ~~Unity, Microsoft Congative Services~~, and OpenAi's GPT3
 Designed for MacOS, iOS, Windows and Android.
 
 
-# ChatGPT Threads
+## ChatGPT Threads
 [Building Transcriber](https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52)
 
