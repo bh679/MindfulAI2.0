@@ -1,3 +1,4 @@
+//https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52
 class Recorder {
     constructor(apiKeyInput, statusMessage) {
         this.chunks = [];
