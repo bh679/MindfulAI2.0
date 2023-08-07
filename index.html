@@ -62,10 +62,10 @@
                 // Define the transcribe function, which sends audio chunks to the Whisper API and fetches the transcription
                 async function transcribe(chunk) {
                     // Log the chunks data to the console for debugging purposes
-                    console.log(chunks);
+                    console.log(chunk);
 
                     // Create a new Blob object from the first chunk (which should contain the audio data)
-                    const audioData = new Blob([chunk, { type: 'audio/webm' });
+                    const audioData = new Blob([chunk], { type: 'audio/webm' });
 
                     // Create a new FormData object
                     const formData = new FormData();
