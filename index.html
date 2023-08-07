@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html data-wf-domain="">
     <head>
+        <script src="recorder.js"></script>
+        <script src="transcriber.js"></script>
     </head>
     <body class="body">
         <!-- Input field for the OpenAI API key -->
@@ -13,117 +15,5 @@
         <!-- Divs to display the status message and the transcription -->
         <div id="statusMessage"></div>
         <div id="transcription"></div>
-
-        <script>
-            // Initialize the array to hold the audio chunks and the MediaRecorder object
-            let chunks = [];
-            let recorder;
-            let audioSize = 0;
-            let transcriptionId = null;  // Initialize the transcription ID
-
-            // Get the elements from the page
-            const apiKeyInput = document.getElementById('apiKey');
-            const recordButton = document.getElementById('recordButton');
-            const statusMessage = document.getElementById('statusMessage');
-            const transcriptionDiv = document.getElementById('transcription');
-
-            // When the record button is clicked
-            recordButton.onclick = function() {
-                // Check if we're currently recording
-                if (recorder && recorder.state === 'recording') {
-                    // Update the status message before stopping the recording
-                    statusMessage.innerText = 'Stopped recording. Audio file size: ' + audioSize.toFixed(2) + ' KB';
-                    // Stop the recording
-                    recorder.stop();
-                    recordButton.innerText = 'Start Recording';
-                } else {
-                    // Request permissions and start recording
-                    navigator.mediaDevices.getUserMedia({ audio: true })
-                        .then(stream => {
-                            recorder = new MediaRecorder(stream);
-                            
-                            // Setup the data handling
-                            recorder.ondataavailable = e => {
-                                chunks.push(e.data);
-                                audioSize += e.data.size / 1024;  // convert bytes to kilobytes
-                            };
-                            recorder.onstop = sendDataToOpenAI;
-                            
-                            // Start the recording
-                            recorder.start();
-                            recordButton.innerText = 'Stop Recording';
-                            statusMessage.innerText = 'Recording';
-                        })
-                        .catch(() => {
-                            statusMessage.innerText = 'Microphone not accessed';
-                        });
-                }
-            };
-
-            let retryInterval = 1000;  // Start with 1 second
-
-            function sendDataToOpenAI() {
-                // Create the audio file and the form data to send to the API
-                const blob = new Blob(chunks, { type: 'audio/wav' });
-                const file = new File([blob], 'audio.wav', { type: 'audio/wav' });
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('model', 'whisper-1');
-
-                // Make the API request
-                fetch('https://api.openai.com/v1/audio/transcriptions', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + apiKeyInput.value
-                    },
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('API response was not ok. Status: ' + response.status);
-                    }
-                    statusMessage.innerText = 'Received response from OpenAI. Status: ' + response.status + '. Audio file size: ' + audioSize.toFixed(2) + ' KB';
-                    return response.json();
-                })
-                .then(data => {
-                    statusMessage.innerText = 'Parsing response data. data.status: '+data.status+' Audio file size: ' + audioSize.toFixed(2) + ' KB';
-                    if (data.status === 'completed') {
-                        transcriptionDiv.innerText = data.transcription;
-                    } else if (data.status === 'processing') {
-                        // Store the transcription ID
-                        transcriptionId = data.id;
-                        statusMessage.innerText = "Processing transcriptionId: "+transcriptionId + ' Transcription not ready, polling again in ' + retryInterval / 1000 + ' seconds. Audio file size: ' + audioSize.toFixed(2) + ' KB';
-                        setTimeout(checkTranscriptionStatus, retryInterval);
-                        retryInterval *= 2;  // Double the interval for the next retry
-                    }
-                })
-                .catch(error => {
-                    statusMessage.innerText = 'Error occurred: ' + error.message + '. Audio file size: ' + audioSize.toFixed(2) + ' KB';
-                });
-            }
-
-            function checkTranscriptionStatus() {
-                // Use the stored transcription ID to check the status
-                fetch('https://api.openai.com/v1/audio/transcriptions/' + transcriptionId, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer ' + apiKeyInput.value
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'completed') {
-                        transcriptionDiv.innerText = data.transcription;
-                    } else {
-                        statusMessage.innerText = 'Transcription not ready, polling again in ' + retryInterval / 1000 + ' seconds. Audio file size: ' + audioSize.toFixed(2) + ' KB';
-                        setTimeout(checkTranscriptionStatus, retryInterval);
-                        retryInterval *= 2;  // Double the interval for the next retry
-                    }
-                })
-                .catch(error => {
-                    statusMessage.innerText = 'Error occurred: ' + error.message + '. Audio file size: ' + audioSize.toFixed(2) + ' KB';
-                });
-            }
-        </script>
     </body>
 </html>
