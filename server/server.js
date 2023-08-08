@@ -1,28 +1,26 @@
 
-
 // Required libraries
-const cors = require('cors');             // Middleware for enabling CORS (Cross-Origin Resource Sharing)
-const axios = require('axios');           // Promise based HTTP client for node.js
-const fs = require('fs');                 // Node.js File System module for reading/writing files
-const express = require('express');       // Express.js framework for building web applications
-const https = require('https');           // HTTPS module for creating HTTPS server
+import cors from 'cors';
+import axios from 'axios';
+import fs from 'fs';
+import express from 'express';
+import https from 'https';
 
 // Define HTTPS credentials using the File System (fs) to read the key and certificate files
 const options = {
-  key: fs.readFileSync('/opt/bitnami/apache/conf/brennan.games.key'),   // Path to private key
-  cert: fs.readFileSync('/opt/bitnami/apache/conf/brennan.games.crt')   // Path to certificate file
+  key: fs.readFileSync('/opt/bitnami/apache/conf/mindfulai.equalreality.com.key'),   // Path to private key
+  cert: fs.readFileSync('/opt/bitnami/apache/conf/mindfulai.equalreality.com.crt')   // Path to certificate file
 };
 
 // Create an instance of an Express application
 const app = express();
 
-
 let promptResponse = {};
 
 //API's
-const PromptGPT = require('./PromptGPT');
-const { Speak, ResetCache } = require('./ElevenLabsServer');// Import functions from 'ElevenLabsServer.js'
-const Transcribe = require('./WhisperTranscribeServer');// Import function from 'WhisperTranscribe.js'
+import PromptGPT from './PromptGPT.js';
+import { Speak, ResetCache } from './ElevenLabsServer.js'; 
+import Transcribe from './WhisperTranscriberServer.js';
 
 
 // Use cors middleware for handling Cross-Origin Resource Sharing

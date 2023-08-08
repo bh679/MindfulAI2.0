@@ -2,10 +2,11 @@
 //https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52 - Redesigning it for Node
 
 // Import necessary modules
-const fetch = require('node-fetch');
-const FormData = require('form-data');
-const multer = require('multer');
-const ENV = require('./env');
+import fetch from 'node-fetch';
+import FormData from 'form-data';
+import multer from 'multer';
+import ENV from './env.js';
+
 
 // Extract API key from ENV
 const OPENAI_API_KEY = ENV.OPENAI_API_KEY;
@@ -14,13 +15,14 @@ const OPENAI_API_KEY = ENV.OPENAI_API_KEY;
 const upload = multer();
 
 // Set up the middleware and route handler
-module.exports = [upload.single('file'), async (req, res) => {
+export default [upload.single('file'), async (req, res) => {
 
     // Extract the audio file from the request
     const audioFile = req.file;
 
     // Log the received file for debugging purposes
     console.log(audioFile);
+
 
     // Create the form data to send to the Whisper API
     const formData = new FormData();

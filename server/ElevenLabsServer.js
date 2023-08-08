@@ -1,5 +1,6 @@
-const axios = require('axios');
-const ENV = require('./env');
+import axios from 'axios';
+import ENV from './env.js';
+
 const ELEVENLABS_API_KEY = ENV.ELEVENLABS_API_KEY;
 
 var audioCache = new Map(); // Create a cache to store audio results
@@ -62,7 +63,7 @@ const ResetCache = () => {
     console.log("Audio cache has been cleared");
 };
 
-module.exports = {
+exports {
     Speak,
     ResetCache
 };

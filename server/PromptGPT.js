@@ -1,7 +1,7 @@
-const fs = require('fs');
-const axios = require('axios');
+import fs from 'fs';
+import axios from 'axios';
+import ENV from './env.js';
 
-const ENV = require('./env');
 const OPENAI_API_KEY = ENV.OPENAI_API_KEY;
 
 class PromptGPT {
@@ -70,4 +70,4 @@ class PromptGPT {
   }
 }
 
-module.exports = PromptGPT;
+exports default PromptGPT;
