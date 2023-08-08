@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html data-wf-domain="">
     <head>
-        <script src="recorder.js"></script>
-        <script src="transcriber.js"></script>
+        <script src="./js/recorder.js"></script>
+        <script src="./js/GalleryDataManager.js"></script>
     </head>
     <body class="body">
         <!-- Input field for the OpenAI API key -->
@@ -17,6 +17,9 @@
         <div id="transcription"></div>
 
         <script>
+
+
+
             //https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52
             window.onload = function() {
                 // Get the elements from the page
@@ -27,9 +30,6 @@
 
                 // Create a new Recorder object
                 const recorder = new Recorder(apiKeyInput, statusMessage);
-
-                // Create a new Transcriber object
-                const transcriber = new Transcriber(apiKeyInput, statusMessage);
 
                 // When the record button is clicked
                 recordButton.onclick = function() {
