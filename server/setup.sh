@@ -1,30 +1,31 @@
 #!/bin/bash
 
-# Check for Node.js and npm
+# Check if Node.js and npm are installed
 if ! [ -x "$(command -v node)" ]; then
-  echo 'Error: Node.js is not installed.' >&2
-  echo 'Installing Node.js...'
+  echo "Node.js is not installed. Installing now..."
   curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
   sudo apt-get install -y nodejs
 else
-  echo 'Node.js is already installed.'
+  echo "Node.js is already installed."
 fi
 
 if ! [ -x "$(command -v npm)" ]; then
-  echo 'Error: npm is not installed.' >&2
-  echo 'Installing npm...'
+  echo "npm is not installed. Installing now..."
   sudo apt-get install -y npm
 else
-  echo 'npm is already installed.'
+  echo "npm is already installed."
 fi
 
-# Navigate to your Node.js app directory (modify this path as needed)
-cd /path/to/your/nodejs/app
+# Ensure required npm packages are installed
+npm_packages=("cors" "axios" "express")
 
-# Install the necessary npm packages
-npm install
+for pkg in "${npm_packages[@]}"; do
+    if ! npm list --depth 1 --global $pkg > /dev/null 2>&1; then
+        echo "Installing $pkg..."
+        npm install $pkg
+    else
+        echo "$pkg is already installed."
+    fi
+done
 
-echo 'All dependencies are installed or up-to-date.'
-
-#Make it executable: chmod +x setup.sh.
-#Run the script: ./setup.sh.
+echo "All dependencies are installed or up-to-date."
