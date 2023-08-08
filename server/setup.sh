@@ -1,4 +1,6 @@
 #!/bin/bash
+#ChatGPT thread to make this
+#https://chat.openai.com/share/c99155e9-2367-4d36-ae33-404d32957b87
 
 # Check if Node.js and npm are installed
 if ! [ -x "$(command -v node)" ]; then
@@ -16,20 +18,36 @@ else
   echo "npm is already installed."
 fi
 
-# Ensure required npm packages are installed
-npm_packages=("cors" "axios" "express")
+# Ensure required npm packages are installed or up-to-date
+npm_packages=("cors" "axios" "express" "node-fetch" "form-data" "multer")
 
 for pkg in "${npm_packages[@]}"; do
-    if ! npm list --depth 1 --global $pkg > /dev/null 2>&1; then
+    if ! npm list --depth 1 $pkg > /dev/null 2>&1; then
         echo "Installing $pkg..."
         npm install $pkg
     else
         echo "$pkg is already installed."
+        
+        # Check if the package is outdated
+        if npm outdated | grep -q "$pkg"; then
+            echo "Updating $pkg..."
+            npm update $pkg
+        else
+            echo "$pkg is up-to-date."
+        fi
     fi
 done
 
+# Check if PM2 is installed
+if ! [ -x "$(command -v pm2)" ]; then
+  echo "PM2 is not installed. Installing now..."
+  sudo npm install -g pm2
+else
+  echo "PM2 is already installed."
+fi
+
 echo "All dependencies are installed or up-to-date."
 
-chmod +x start_server.sh
+chmod +x start.sh
 
-echo "Start the server with ./start_server.sh"
+echo "Start the server with ./start.sh"
