@@ -5,7 +5,7 @@
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import multer from 'multer';
-import ENV from './env.js';
+import * as ENV from './env.js';
 
 
 // Extract API key from ENV

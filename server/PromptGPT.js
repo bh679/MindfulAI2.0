@@ -1,6 +1,6 @@
 import fs from 'fs';
 import axios from 'axios';
-import ENV from './env.js';
+import * as ENV from './env.js';
 
 const OPENAI_API_KEY = ENV.OPENAI_API_KEY;
 
@@ -70,4 +70,4 @@ class PromptGPT {
   }
 }
 
-exports default PromptGPT;
+export default PromptGPT;

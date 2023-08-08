@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ENV from './env.js';
+import * as ENV from './env.js';
 
 const ELEVENLABS_API_KEY = ENV.ELEVENLABS_API_KEY;
 
@@ -63,7 +63,4 @@ const ResetCache = () => {
     console.log("Audio cache has been cleared");
 };
 
-exports {
-    Speak,
-    ResetCache
-};
+export { Speak, ResetCache };
