@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'JudgeGPT Socket Singleton',
+    name: 'Mindful AI',
     script: 'server.js',
     instances: '1', // This ensures only one instance of the app runs
     // exec_mode: 'cluster', // Not necessary since 'instances' is set to 1
