@@ -29,3 +29,7 @@ for pkg in "${npm_packages[@]}"; do
 done
 
 echo "All dependencies are installed or up-to-date."
+
+chmod +x start_server.sh
+
+echo "Start the server with ./start_server.sh"
