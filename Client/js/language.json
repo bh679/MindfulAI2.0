@@ -1,0 +1,81 @@
+{
+    "startrecording": {
+        "en": "Ask Me Something!",
+        "es": "¡Pregúntame algo!",
+        "fr": "Posez-moi une question!",
+        "hi": "मुझसे कुछ पूछिए!",
+        "it": "Chiedimi qualcosa!",
+        "de": "Frag mich etwas!",
+        "pl": "Zapytaj mnie o coś!",
+        "pt": "Pergunte-me algo!",
+        "zh-TW": "問我些什麼！",
+        "zh-TR": "問我些什麼！",
+        "zh-CN": "问我些什么！"
+    },
+    "stoprecording": {
+        "en": "I'm Done Asking.",
+        "es": "He terminado de preguntar.",
+        "fr": "J'ai fini de demander.",
+        "hi": "मैं पूछ चुका हूँ।",
+        "it": "Ho finito di chiedere.",
+        "de": "Ich habe gefragt.",
+        "pl": "Zapytałem.",
+        "pt": "Terminei de perguntar.",
+        "zh-TW": "我問完了。",
+        "zh-TR": "我問完了。",
+        "zh-CN": "我问完了。"
+    },
+    "processing": {
+        "en": "Processing",
+        "es": "Procesando",
+        "fr": "Traitement",
+        "hi": "प्रोसेस हो रहा है",
+        "it": "Elaborazione",
+        "de": "Verarbeitung",
+        "pl": "Przetwarzanie",
+        "pt": "Processando",
+        "zh-TW": "處理中",
+        "zh-TR": "處理中",
+        "zh-CN": "处理中"
+    },
+    "responding": {
+        "en": "Responding",
+        "es": "Respondiendo",
+        "fr": "Réponse",
+        "hi": "प्रतिसाद देना",
+        "it": "Rispondendo",
+        "de": "Antworten",
+        "pl": "Odpowiadanie",
+        "pt": "Respondendo",
+        "zh-TW": "回應中",
+        "zh-TR": "回應中",
+        "zh-CN": "回应中"
+    },
+    "language": {
+        "en": "Language",
+        "es": "Idioma",
+        "fr": "Langue",
+        "hi": "भाषा",
+        "it": "Lingua",
+        "de": "Sprache",
+        "pl": "Język",
+        "pt": "Língua",
+        "zh-TW": "語言",
+        "zh-TR": "語言",
+        "zh-CN": "语言"
+    },
+    "currentLanguage": {
+        "en": "English",
+        "es": "Español",
+        "fr": "Français",
+        "hi": "हिंदी",
+        "it": "Italiano",
+        "de": "Deutsch",
+        "pl": "Polski",
+        "pt": "Português",
+        "zh-TW": "台灣中文",
+        "zh-TR": "繁體中文",
+        "zh-CN": "简体中文"
+    }
+
+}

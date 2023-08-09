@@ -23,6 +23,7 @@ let promptResponse = {};
 import PromptGPT from './PromptGPT.js';
 import { Speak, ResetCache } from './ElevenLabsServer.js'; 
 import Transcribe from './WhisperTranscriberServer.js';
+import textToSpeech from './azure-cognitiveservices-speech.js';
 
 
 // Use cors middleware for handling Cross-Origin Resource Sharing
@@ -46,6 +47,29 @@ app.post('/Transcribe', Transcribe);
 // Restart the server
 app.get('/Restart', function (req, res) {
     //Restart();
+});
+
+// creates a temp file on server, the streams to client
+/* eslint-disable no-unused-vars */
+app.get('/text-to-speech', async (req, res, next) => {
+    
+    const { key, region, phrase, file } = req.query;
+    
+    if (!key || !region || !phrase) res.status(404).send('Invalid query string');
+    
+    let fileName = null;
+    
+    // stream from file or memory
+    if (file && file === true) {
+        fileName = `./temp/stream-from-file-${timeStamp()}.mp3`;
+    }
+    
+    const audioStream = await textToSpeech(key, region, phrase, fileName);
+    res.set({
+        'Content-Type': 'audio/mpeg',
+        'Transfer-Encoding': 'chunked'
+    });
+    audioStream.pipe(res);
 });
 
 app.get('/ping', function (req, res) {

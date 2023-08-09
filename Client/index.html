@@ -68,8 +68,7 @@
                           <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
                           <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0v5zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3z"/>
                         </svg>
-
-                        Start Recording
+                        <div id="recordButtonTxt"></div>
                     </button>
                     <div class="col-3 d-flex justify-content-center" >
                         <button id="nextButton" class="btn" onclick="app.Next();" style="color:white">
@@ -105,7 +104,7 @@
                           <a class="nav-link" href="https://mindfulai.equalreality.com/ai-powered-artists/">About</a>
                         </li>
                         <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" id="languageHeading" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Language</a>
+                          <a class="nav-link dropdown-toggle" id="languageHeading" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><div id="languageTxt">Language</div></a>
                           <div class="dropdown-menu" id="languageDropdown">
                             <a class="dropdown-item" href="#">Taiwanese Chinese</a>
                             <a class="dropdown-item" href="#">English</a>
@@ -147,6 +146,7 @@
                 app.languageManager = languageManager;
 
 
+
                 const micEmpty = `
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16" id="mic-empty">
                           <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
@@ -170,7 +170,7 @@
 
                 async function RecordToText() {
 
-                    recordButton.innerHTML = micFill + 'Stop Recording';
+                    recordButton.innerHTML = micFill + phrases.stoprecording;
                     micEmpty.hidden = true;
                     micFill.hidden = false;
                     speechManager.StopSpeaking();
@@ -184,19 +184,19 @@
                 {
                     //update button
                     recordButton.disabled = true;
-                    recordButton.innerHTML = micEmpty + 'Processing';
+                    recordButton.innerHTML = micEmpty + phrases.processing;
                     speechManager.voicing = true;
 
                     //transcribe results
                     var transcript = await transcribe(recordingChunk);
-                    recordButton.innerHTML = micEmpty + 'Responding';
+                    recordButton.innerHTML = micEmpty + phrases.responding;
 
                     //save transcription
                     transcriptionDiv.innerHtml = transcript;
 
                     await app.UserTalk(transcript,FinishedSpeaking) ;
 
-                    recordButton.innerHTML = micEmpty + 'Speaking';
+                    recordButton.innerHTML = micEmpty + phrases.speaking;
                     recordButton.disabled = false;
                 }
 
