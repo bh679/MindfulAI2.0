@@ -12,7 +12,7 @@ class LanguageManager
 		this.addDropdownListeners();
 		this.UpdateTitle();
 
-		this.languagePrompt = ". Respond in English";		
+		//this.languagePrompt = ". Respond in English";		
 	}
 
 	languagePrompt()
@@ -22,7 +22,7 @@ class LanguageManager
 
 	UpdateTitle()
 	{
-		this.title.innerHTML = globe2 + " Language: " + this.currentLanguage
+		this.title.innerHTML = globe2 + " Language: " + this.currentLanguage;
 	}
 
 	populateDropdown() {

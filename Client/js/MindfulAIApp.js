@@ -5,6 +5,7 @@ class MindfulAIApp {
 
         this.galleryManager = new GalleryManager();
         this.currentPainting;
+        this.languageManager;
 
         // Create a new SpeechManager object
         this.speechManager = new SpeechManager('https://mindfulai.equalreality.com:3000', document.getElementById('statusMessage'));
@@ -45,7 +46,7 @@ class MindfulAIApp {
         //GPTGen.promptWrapper.prePrompt = CurrentPainting.Prompt + galleryData.instructions + galleryData.Questions + languagePrompt + galleryData.valuesPrompt;
         var prompt = this.currentPainting.personality 
              + this.galleryManager.gallery.instructions 
-             + languagePrompt.languagePrompt() 
+            // + this.languageManager.languagePrompt() 
              + (this.galleryManager.gallery.valuesPrompt ? this.galleryManager.gallery.valuesPrompt : "") 
              + ": {" + text + "}";
 

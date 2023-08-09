@@ -19,7 +19,7 @@ else
 fi
 
 # Ensure required npm packages are installed or up-to-date
-npm_packages=("cors" "axios" "express" "node-fetch" "form-data" "multer")
+npm_packages=("cors" "axios" "express" "node-fetch" "form-data" "multer" "microsoft-cognitiveservices-speech-sdk")
 
 for pkg in "${npm_packages[@]}"; do
     if ! npm list --depth 1 $pkg > /dev/null 2>&1; then

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech</title>
+</head>
+<body>
+
+<h1>Microsoft Cognitive Services - Text to Speech</h1>
+
+<div>
+    <label for="apiKey">API Key:</label>
+    <input type="text" id="apiKey">
+</div>
+
+<div>
+    <label for="textToSpeak">Text to be Spoken:</label>
+    <input type="text" id="textToSpeak">
+</div>
+
+<button onclick="speakText()">Speak</button>
+
+<script>
+    async function speakText() {
+        const apiKey = document.getElementById("apiKey").value;
+        const textToSpeak = document.getElementById("textToSpeak").value;
+
+        const tokenEndpoint = "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken";
+        const ttsEndpoint = "https://westus.tts.speech.microsoft.com/cognitiveservices/v1";
+
+        // Fetching the authentication token
+        const tokenResponse = await fetch(tokenEndpoint, {
+            method: "POST",
+            headers: {
+                "Ocp-Apim-Subscription-Key": apiKey
+            }
+        });
+        const token = await tokenResponse.text();
+
+        // Request payload
+        const payload = `<speak version='1.0' xml:lang='en-US'>
+            <voice xml:lang='en-US' xml:gender='Female' name='en-US-AriaNeural'>
+                ${textToSpeak}
+            </voice>
+        </speak>`;
+
+        // Fetching audio data
+        const audioResponse = await fetch(ttsEndpoint, {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/ssml+xml",
+                "X-Microsoft-OutputFormat": "audio-16khz-64kbitrate-mono-mp3"
+            },
+            body: payload
+        });
+        
+        const audioBlob = await audioResponse.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        // Play the generated audio
+        const audio = new Audio(audioUrl);
+        audio.play();
+    }
+</script>
+
+</body>
+</html>
