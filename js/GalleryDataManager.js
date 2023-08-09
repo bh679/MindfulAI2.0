@@ -20,14 +20,22 @@ class PaintingGroup {
   }
   
   addPainting(painting) {
+    console.log(painting);
+
+    // Check if imageUrl is from the specified domain and replace if necessary
+    if (painting.imageUrl && painting.imageUrl.startsWith('http://13.237.241.168/')) {
+        painting.imageUrl = painting.imageUrl.replace('http://13.237.241.168/', 'https://mindfulai.equalreality.com/');
+    }
+
     this.paintings.push(new Painting(
-      painting.title, 
-      painting.imageUrl, 
-      painting.personality, 
-      painting.artist, 
-      painting.description
+        painting.title, 
+        painting.imageUrl, 
+        painting.personality, 
+        painting.artist, 
+        painting.description
     ));
-  }
+}
+
 }
 
 // Gallery class to hold all painting groups
@@ -45,23 +53,32 @@ class Gallery {
   }
 }
 
-const gallery = new Gallery();
+async function fetchAndPopulateGallery(url) {
+    try {
+        const response = await fetch(url);
 
-// Fetching data and populating the Gallery instance
-const url = 'https://mindfulai.equalreality.com/wp-content/uploads/2023/04/Gallery-2.json';
-fetch(url)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+        if (!response.ok) {
+            // Log the URL and the status for context
+            console.error(`Failed to fetch from ${url}. Status: ${response.status}`);
+            const textResponse = await response.text();  // Retrieve text response for further logging
+            console.error('Response content:', textResponse);
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        const gallery = new Gallery();  // Create a new Gallery instance
+
+        data.paintingGroups.forEach(group => {
+            gallery.addPaintingGroup(group);
+        });
+
+        console.log('Successfully populated gallery:', gallery);
+        
+        return gallery;  // Return the populated gallery
+
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error.message);
+        throw error;  // If you want the error to be propagated for further handling
     }
-    return response.json();
-  })
-  .then(data => {
-    data.paintingGroups.forEach(group => {
-      gallery.addPaintingGroup(group);
-    });
-    console.log(gallery);  // Here you can see the populated gallery object
-  })
-  .catch(error => {
-    console.log('There was a problem with the fetch operation:', error.message);
-  });
+}
