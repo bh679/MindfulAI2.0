@@ -76,6 +76,45 @@
         "zh-TW": "台灣中文",
         "zh-TR": "繁體中文",
         "zh-CN": "简体中文"
+    },"about": {
+        "en": "About",
+        "es": "Acerca de",
+        "fr": "À propos",
+        "hi": "बारे में",
+        "it": "Informazioni",
+        "de": "Über",
+        "pl": "O nas",
+        "pt": "Sobre",
+        "zh-TW": "關於",
+        "zh-TR": "關於",
+        "zh-CN": "关于"
+    },
+    "feedback": {
+        "en": "Feedback",
+        "es": "Comentarios",
+        "fr": "Retour d'information",
+        "hi": "प्रतिसाद",
+        "it": "Feedback",
+        "de": "Feedback",
+        "pl": "Opinie",
+        "pt": "Comentários",
+        "zh-TW": "意見反饋",
+        "zh-TR": "意見反饋",
+        "zh-CN": "反馈"
+    },
+    "app": {
+        "en": "App",
+        "es": "Aplicación",
+        "fr": "Application",
+        "hi": "ऐप्लिकेशन",
+        "it": "App",
+        "de": "App",
+        "pl": "Aplikacja",
+        "pt": "App",
+        "zh-TW": "應用程式",
+        "zh-TR": "應用程式",
+        "zh-CN": "应用程序"
     }
+
 
 }

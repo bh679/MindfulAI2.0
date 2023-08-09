@@ -23,7 +23,10 @@ class LanguageManager
 		    document.getElementById("recordButtonTxt"),
 		    document.getElementById("recordButtonTxt"),
 		    document.getElementById("recordButtonTxt"),
-		    document.getElementById("languageTxt")
+		    document.getElementById("languageTxt"),
+		    document.getElementById("appTxt"),
+		    document.getElementById("feedbackTxt"),
+		    document.getElementById("aboutTxt")
 		);
 
 		// Load translations from a remote JSON file:
@@ -44,7 +47,7 @@ class LanguageManager
 
 	UpdateTitle()
 	{
-		this.title.innerHTML = globe2 + this.phrases.language.currentValue + ": "+ this.phrases.currentLanguage.currentValue;
+		this.title.innerHTML = globe2 + " " + this.phrases.language.currentValue + ": "+ this.phrases.currentLanguage.currentValue;
 	}
 
 	populateDropdown() {
@@ -107,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 class Phrases {
-    constructor(startrecordingDiv, stoprecordingDiv, processingDiv, respondingDiv, languageDiv) {
+    constructor(startrecordingDiv, stoprecordingDiv, processingDiv, respondingDiv, languageDiv, appDiv, feedbackDiv, aboutDiv) {
         this.startrecording = new LanguageDiv(startrecordingDiv, {
             [DEFAULT_LANGUAGE_KEY]: "Ask Me Something!",
             // Add other languages here...
@@ -132,6 +135,22 @@ class Phrases {
             [DEFAULT_LANGUAGE_KEY]: "English",
             // Add other languages here...
         });
+        this.app = new LanguageDiv(languageDiv, {
+            [DEFAULT_LANGUAGE_KEY]: "English",
+            // Add other languages here...
+        });
+        this.app = new LanguageDiv(appDiv, {
+            [DEFAULT_LANGUAGE_KEY]: "App",
+            // Add other languages here...
+        });
+        this.feedback = new LanguageDiv(feedbackDiv, {
+            [DEFAULT_LANGUAGE_KEY]: "Feedback",
+            // Add other languages here...
+        });
+        this.about = new LanguageDiv(aboutDiv, {
+            [DEFAULT_LANGUAGE_KEY]: "About",
+            // Add other languages here...
+        });
     }
 
     setLanguage(language) {
@@ -141,6 +160,9 @@ class Phrases {
         this.responding.setLanguage(language);
         this.language.setLanguage(language);
         this.currentLanguage.setLanguage(language);
+        this.app.setLanguage(language);
+        this.feedback.setLanguage(language);
+        this.about.setLanguage(language);
     }
 
     async loadDataFromJSON(url) {
@@ -155,6 +177,9 @@ class Phrases {
             this.responding.languages = data.responding;
             this.language.languages = data.language;
             this.currentLanguage.languages = data.currentLanguage;
+            this.app.languages = data.app;
+            this.feedback.languages = data.feedback;
+            this.about.languages = data.about;
         } catch (error) {
             console.error("Error loading data from JSON:", error);
         }
