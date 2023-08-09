@@ -5,6 +5,11 @@ class MindfulAIApp {
 
         this.galleryManager = new GalleryManager();
         this.currentPainting;
+
+        // Create a new SpeechManager object
+        this.speechManager = new SpeechManager('https://mindfulai.equalreality.com:3000', document.getElementById('statusMessage'));
+
+        speechManager.voicing = true;
         
         this.dataURL = 'https://mindfulai.equalreality.com/wp-content/uploads/2023/04/Gallery-2.json';
     }
@@ -50,25 +55,10 @@ class MindfulAIApp {
         var response = await AskGPT(prompt);
 
         console.log(response);
-        
-    }
 
-/*
-    public void AskQuestion()
-    {
-        if(questionId < galleryData.questionsToAsk)
-            GPTGen.promptWrapper.prePrompt = CurrentPainting.Prompt + galleryData.instructions + galleryData.Questions + languagePrompt;
-        else if(questionId < galleryData.questionsToAsk+galleryData.wisdomToOffer)
-            GPTGen.promptWrapper.prePrompt = CurrentPainting.Prompt + galleryData.instructions + galleryData.Wisdom + languagePrompt;
-        else
-        {
-            GPTGen.promptWrapper.prePrompt = CurrentPainting.Prompt + galleryData.instructions + languagePrompt;
-            responseReader.wrapper.postPrompt = Instruction[Random.Range(0,Instruction.Length)];
-        }
-        
-        questionId ++;
+        //read it out
+        speechManager.Speak(response,"21m00Tcm4TlvDq8ikWAM");
     }
-*/
 
     SetBackgroundImage(imageUrl) {
     // Create a new div element

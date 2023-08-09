@@ -23,7 +23,7 @@ class PaintingGroup {
 
   // Method to add a painting object to the group.
   addPainting(painting) {
-    console.log(painting);      // Log the painting data.
+    //console.log(painting);      // Log the painting data.
 
     // Check if the image URL comes from a specific domain.
     if (painting.imageUrl && painting.imageUrl.startsWith('http://13.237.241.168/')) {

@@ -3,6 +3,7 @@
     <head>
         <script src="./js/recorder.js"></script>
         <script src="./js/AskGPTClient.js"></script>
+        <script src="./js/API/ElevenLabsClient.js"></script>
         <script src="./js/LanguageManager.js"></script>
         <script src="./js/GalleryDataManager.js"></script>
         <script src="./js/GalleryManager.js"></script>
@@ -35,6 +36,7 @@
                 // When the record button is clicked
                 recordButton.onclick = function() {
                     RecordToText();
+                    buttonPressHandler();
                 };
 
                 async function RecordToText() {
