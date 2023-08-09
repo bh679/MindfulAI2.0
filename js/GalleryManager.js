@@ -1,4 +1,5 @@
 //GalleryManager.js
+//design of this class ChatGPT - https://chat.openai.com/share/17e2b265-c6b0-4576-a8cb-c6b1b25e5b71
 
 class GalleryManager {
 	

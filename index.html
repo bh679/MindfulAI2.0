@@ -2,14 +2,12 @@
 <html data-wf-domain="">
     <head>
         <script src="./js/recorder.js"></script>
+        <script src="./js/LanguageManager.js"></script>
         <script src="./js/GalleryDataManager.js"></script>
         <script src="./js/GalleryManager.js"></script>
         <script src="./js/MindfulAIApp.js"></script>
     </head>
     <body class="body">
-        <!-- Input field for the OpenAI API key -->
-        <label for="apiKey">OpenAI API Key:</label>
-        <input type="password" id="apiKey">
 
         <!-- Button to start and stop recording -->
         <button id="recordButton">Start Recording</button>
@@ -57,6 +55,8 @@
 
                     //save transcription
                     transcriptionDiv.innerText = transcript;
+
+                    app.UserTalk(transcript);
                 }
 
                 const apiDomain = 'https://mindfulai.equalreality.com:3000';
