@@ -8,8 +8,6 @@ class MindfulAIApp {
 
         // Create a new SpeechManager object
         this.speechManager = new SpeechManager('https://mindfulai.equalreality.com:3000', document.getElementById('statusMessage'));
-
-        speechManager.voicing = true;
         
         this.dataURL = 'https://mindfulai.equalreality.com/wp-content/uploads/2023/04/Gallery-2.json';
     }
@@ -41,13 +39,13 @@ class MindfulAIApp {
     }
 
     // TODO: Add speak button to talk to picture
-    async UserTalk(text)
+    async UserTalk(text, callback)
     {
         // TODO: Implement prompts with personality
         //GPTGen.promptWrapper.prePrompt = CurrentPainting.Prompt + galleryData.instructions + galleryData.Questions + languagePrompt + galleryData.valuesPrompt;
         var prompt = this.currentPainting.personality 
              + this.galleryManager.gallery.instructions 
-             + languagePrompt 
+             + languagePrompt.languagePrompt() 
              + (this.galleryManager.gallery.valuesPrompt ? this.galleryManager.gallery.valuesPrompt : "") 
              + ": {" + text + "}";
 
@@ -59,7 +57,20 @@ class MindfulAIApp {
         console.log(response);
 
         //read it out
-        await speechManager.Speak(response,"21m00Tcm4TlvDq8ikWAM");
+        await speechManager.Speak(response,"21m00Tcm4TlvDq8ikWAM", callback);
+    }
+
+    Next()
+    {
+        this.currentPainting = this.galleryManager.next();
+        this.SetBackgroundImage(this.currentPainting.imageUrl);
+
+    }
+
+    Previous()
+    {
+        this.currentPainting = this.galleryManager.previous();
+        this.SetBackgroundImage(this.currentPainting.imageUrl);
     }
 
     SetBackgroundImage(imageUrl) {

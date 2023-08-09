@@ -14,6 +14,7 @@
         <script src="./js/recorder.js"></script>
         <script src="./js/AskGPTClient.js"></script>
         <script src="./js/API/ElevenLabsClient.js"></script>
+        <script src="./js/icons.js"></script>
         <script src="./js/LanguageManager.js"></script>
         <script src="./js/GalleryDataManager.js"></script>
         <script src="./js/GalleryManager.js"></script>
@@ -51,9 +52,15 @@
 
             <div class="flex-grow-1"></div>
 
-            <div class="row">
-                <div class="row">
-                    <div class="col-3"></div>
+            <div class="row bg-primary">
+                <div class="row" style="padding: 20px;">
+                    <div class="col-3 d-flex justify-content-center">
+                        <button id="previousButton" class="btn" onclick="app.Previous();" style="color:white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+                              <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"/>
+                            </svg>
+                        </button>
+                    </div>
                     <!-- Button to start and stop recording -->
                     <button id="recordButton" class="btn btn-secondary col-6">
 
@@ -64,9 +71,15 @@
 
                         Start Recording
                     </button>
+                    <div class="col-3 d-flex justify-content-center" >
+                        <button id="nextButton" class="btn" onclick="app.Next();" style="color:white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                              <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
+                            </svg>
+                        </button>
                     </div>
-                    <div class="col-3" ></div>
                 </div>
+            </div>
 
                 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                   <div class="container-fluid">
@@ -81,27 +94,28 @@
                             <span class="visually-hidden">(current)</span>
                           </a>
                         </li>
-                        <!--li class="nav-item">
-                          <a class="nav-link" href="#">Features</a>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">
+                         </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="#">Pricing</a>
-                        </li-->
+                          <a class="nav-link" href="https://docs.google.com/forms/d/e/1FAIpQLSf5Zncv3pICRPwujVUC8VkFwvU9IteuLmS9a56AdQii3JyFWQ/viewform?usp=sf_link">Feedback</a>
+                        </li>
                         <li class="nav-item">
                           <a class="nav-link" href="https://mindfulai.equalreality.com/ai-powered-artists/">About</a>
                         </li>
-                        <!--li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" id="languageHeading" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Language</a>
+                          <div class="dropdown-menu" id="languageDropdown">
+                            <a class="dropdown-item" href="#">Taiwanese Chinese</a>
+                            <a class="dropdown-item" href="#">English</a>
                             <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
                             <a class="dropdown-item" href="#">Separated link</a>
                           </div>
                         </li>
                       </ul>
-                      <form class="d-flex">
+                      <!--form class="d-flex">
                         <input class="form-control me-sm-2" type="search" placeholder="Search">
                         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                       </form-->
@@ -126,6 +140,11 @@
                 const recordButton = document.getElementById('recordButton');
                 const statusMessage = document.getElementById('statusMessage');
                 const transcriptionDiv = document.getElementById('transcription');
+                const languageHeadingDropdown = document.getElementById('languageHeading');
+                const languageDropdown = document.getElementById('languageDropdown');
+
+                languageManager = new LanguageManager(languageDropdown, languageHeadingDropdown); 
+
 
                 const micEmpty = `
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16" id="mic-empty">
@@ -153,6 +172,7 @@
                     recordButton.innerHTML = micFill + 'Stop Recording';
                     micEmpty.hidden = true;
                     micFill.hidden = false;
+                    speechManager.StopSpeaking();
 
                     //start/stop reocrding
                     recorder.toggleRecording(FinishRecording);
@@ -164,17 +184,24 @@
                     //update button
                     recordButton.disabled = true;
                     recordButton.innerHTML = micEmpty + 'Processing';
+                    speechManager.voicing = true;
 
                     //transcribe results
                     var transcript = await transcribe(recordingChunk);
+                    recordButton.innerHTML = micEmpty + 'Responding';
 
                     //save transcription
                     transcriptionDiv.innerHtml = transcript;
 
-                    await app.UserTalk(transcript);
+                    await app.UserTalk(transcript,FinishedSpeaking) ;
 
-                    recordButton.innerHTML = micEmpty + 'Start Recording';
+                    recordButton.innerHTML = micEmpty + 'Speaking';
                     recordButton.disabled = false;
+                }
+
+                function FinishedSpeaking()
+                {
+                    recordButton.innerHTML = micEmpty + 'Start Recording';
                 }
 
                 const apiDomain = 'https://mindfulai.equalreality.com:3000';
