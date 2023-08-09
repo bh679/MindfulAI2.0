@@ -28,14 +28,14 @@ class GalleryManager {
 		const randomGroup = this.gallery.paintingGroups[randomGroupIndex];
 
 		if (randomGroup.paintings.length === 0) {
-			return getRandomPainting(count++);  // Return null if no paintings in the selected group
+			return this.getRandomPainting(count++);  // Return null if no paintings in the selected group
 		}
 
 		// Choose a random painting from the selected group
 		const randomPaintingIndex = Math.floor(Math.random() * randomGroup.paintings.length);
 
 		if(randomGroup.paintings[randomPaintingIndex] == null)
-			return getRandomPainting(count++); 
+			return this.getRandomPainting(count++); 
 
 		console.log(randomGroup.paintings[randomPaintingIndex]);
 		return randomGroup.paintings[randomPaintingIndex];  // Return the randomly selected painting

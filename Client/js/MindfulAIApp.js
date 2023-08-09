@@ -21,6 +21,8 @@ class MindfulAIApp {
             // Pull data from WordPress
             await this.galleryManager.GetDataFromURL(this.dataURL);
 
+            console.log(this.galleryManager);
+
             // Pick a random picture
             this.currentPainting = this.galleryManager.getRandomPainting();
 
@@ -57,7 +59,7 @@ class MindfulAIApp {
         console.log(response);
 
         //read it out
-        speechManager.Speak(response,"21m00Tcm4TlvDq8ikWAM");
+        await speechManager.Speak(response,"21m00Tcm4TlvDq8ikWAM");
     }
 
     SetBackgroundImage(imageUrl) {
