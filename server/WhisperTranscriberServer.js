@@ -1,3 +1,4 @@
+//WhisperTranscriberServer.js
 //https://chat.openai.com/share/cd8628b6-1fed-4028-af5a-882bb8a436b7 - How to use whisper
 //https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52 - Redesigning it for Node
 
