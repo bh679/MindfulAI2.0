@@ -6,7 +6,7 @@
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import multer from 'multer';
-import * as ENV from './env.js';
+import ENV from './env.js';
 
 
 // Extract API key from ENV
@@ -17,13 +17,14 @@ const upload = multer();
 
 // Set up the middleware and route handler
 export default [upload.single('file'), async (req, res) => {
+    console.log("WhisperTranscriberServer.js");
 
     // Extract the audio file from the request
     const audioFile = req.file;
 
     // Log the received file for debugging purposes
     console.log(audioFile);
-
+    console.log(OPENAI_API_KEY);
 
     // Create the form data to send to the Whisper API
     const formData = new FormData();
@@ -41,7 +42,10 @@ export default [upload.single('file'), async (req, res) => {
             body: formData,
         });
 
+        console.log(response);
+
         if (!response.ok) {
+            console.log('API response was not ok. Status: ' + response.status);
             throw new Error('API response was not ok. Status: ' + response.status);
         }
 

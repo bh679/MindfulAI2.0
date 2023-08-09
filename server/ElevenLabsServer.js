@@ -1,6 +1,6 @@
 //ElevenLAbsServer.js
 import axios from 'axios';
-import * as ENV from './env.js';
+import ENV from './env.js';
 
 const ELEVENLABS_API_KEY = ENV.ELEVENLABS_API_KEY;
 
