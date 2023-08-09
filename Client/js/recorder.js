@@ -1,14 +1,12 @@
 //recorder.js
 //https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52
 class Recorder {
-    constructor(apiKeyInput, statusMessage) {
+    constructor(statusMessage) {
         this.chunk = null;
         this.recorder = null;
         this.audioSize = 0;
         this.transcriptionId = null;  // Initialize the transcription ID
         this.retryInterval = 1000;  // Start with 1 second
-
-        this.apiKeyInput = apiKeyInput;
         this.statusMessage = statusMessage;
     }
 

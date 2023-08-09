@@ -61,19 +61,27 @@ class MindfulAIApp {
     }
 
     SetBackgroundImage(imageUrl) {
-    // Create a new div element
-    const bgElement = document.createElement('div');
-
-    // Style the div to fill the entire viewport and set the image as the background
-    bgElement.style.width = '100vw';
-    bgElement.style.height = '100vh';
+    // Check if a background div already exists
+    let bgElement = document.getElementById('background');
+    
+    // If it doesn't exist, create a new div element
+    if(!bgElement) {
+        bgElement = document.createElement('div');
+        bgElement.id = "background";
+        document.body.appendChild(bgElement); // Append the div to the body
+    }
+    
+    // Set the image and other styles
     bgElement.style.backgroundImage = `url(${imageUrl})`;
-    bgElement.style.backgroundSize = 'cover'; // Cover the viewport
-    bgElement.style.backgroundPosition = 'center'; // Center the image
+    bgElement.style.backgroundSize = 'cover';
+    bgElement.style.backgroundPosition = 'center';
 
-    // Append the div to the body
-    document.body.appendChild(bgElement);
+    // Trigger the fade-in effect by setting opacity to 1
+    setTimeout(() => {
+        bgElement.style.opacity = '1';
+    }, 0);  // A small delay using setTimeout to ensure styles are applied first
 }
+
 }
 
 // To start the app
