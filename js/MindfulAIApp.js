@@ -38,10 +38,19 @@ class MindfulAIApp {
     {
         // TODO: Implement prompts with personality
         //GPTGen.promptWrapper.prePrompt = CurrentPainting.Prompt + galleryData.instructions + galleryData.Questions + languagePrompt + galleryData.valuesPrompt;
-        var prompt = this.currentPainting.personality + this.galleryManager.gallery.instructions + languagePrompt + this.galleryManager.gallery.valuesPrompt + "{"+text+"}";
+        var prompt = this.currentPainting.personality 
+             + this.galleryManager.gallery.instructions 
+             + languagePrompt 
+             + (this.galleryManager.gallery.valuesPrompt ? this.galleryManager.gallery.valuesPrompt : "") 
+             + ": {" + text + "}";
+
         console.log(prompt);
 
         // TODO: Implement reading back response
+        var response = await AskGPT(prompt);
+
+        console.log(response);
+        
     }
 
 /*
