@@ -105,7 +105,23 @@
                 }
 
 
+                // Check server status on page load
+                    checkServerStatus();
 
+                    async function checkServerStatus() {
+                        try {
+                            const response = await fetch(apiDomain + '/ping');
+                            const data = await response.json();
+                            
+                            if (data.status === 'Server is running!') {
+                                console.log("Server is up and running");
+                                // Optionally, you can display a message or change some UI element to show server status.
+                            }
+                        } catch (error) {
+                            console.error("Server seems to be down:", error);
+                            // Here, you can also display a warning to the user about the server being down or handle it in another appropriate way.
+                        }
+                    }
 
             };
         </script>

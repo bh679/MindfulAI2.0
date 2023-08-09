@@ -1,7 +1,7 @@
 //PromptGPT.js
 import fs from 'fs';
 import axios from 'axios';
-import * as ENV from './env.js';
+import ENV from './env.js';
 
 const OPENAI_API_KEY = ENV.OPENAI_API_KEY;
 
@@ -54,7 +54,7 @@ class PromptGPT {
           // Invoke all registered callbacks
           for (const callback of this.callbacks) {
             try {
-              callback(null, status);
+              callback(null, this.status);
             } catch (e) {
               console.error('Error invoking callback:', e);
             }

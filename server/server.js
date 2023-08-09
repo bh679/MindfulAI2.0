@@ -48,6 +48,10 @@ app.get('/Restart', function (req, res) {
     //Restart();
 });
 
+app.get('/ping', function (req, res) {
+    res.json({ status: 'Server is running!' });
+});
+
 // Call to GPT for older version of JudgeGPT
 app.post('/AskGPT', function (req, res) {
     // Log the body of the request
