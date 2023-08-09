@@ -9,6 +9,14 @@ class LanguageManager
 		this.dropDown = dropDown;
 		this.title = title;
 
+		this.init();
+		
+	}
+
+	async init()
+	{
+
+
 		// Example usage:
 		this.phrases = new Phrases(
 		    document.getElementById("recordButtonTxt"),
@@ -19,16 +27,14 @@ class LanguageManager
 		);
 
 		// Load translations from a remote JSON file:
-		this.phrases.loadDataFromJSON('./js/language.json').then(() => {
-		    // Once data is loaded, you can set the desired language:
-		    this.phrases.setLanguage(DEFAULT_LANGUAGE_KEY);
-		});
+		await this.phrases.loadDataFromJSON('./js/language.json')
+
+		this.phrases.setLanguage(DEFAULT_LANGUAGE_KEY);
+		
 
 		this.populateDropdown();
 		this.addDropdownListeners();
 		this.UpdateTitle();	
-
-		
 	}
 
 	languagePrompt()
@@ -42,34 +48,40 @@ class LanguageManager
 	}
 
 	populateDropdown() {
-        // Example: List of languages. You can fetch this from a server or any other source.
-        const languages = ["台灣中文 (comnig)", "English", "Español (comnig)", "Français (comnig)", "हिंदी (comnig)", "Italiano (comnig)", "Deutsch (comnig)", "Polski (comnig)", "Português (comnig)"];
+	    this.dropDown.innerHTML = "";  // Clear the dropdown first
 
-        this.dropDown.innerHTML = "";  // Clear the dropdown first
-        for (let lang of languages) {
-            let item = document.createElement("a");
-            item.classList.add("dropdown-item");
-            item.href = "#";
-            item.innerText = lang;
-            this.dropDown.appendChild(item);
-        }
-    }
+	    // Iterate through the keys of this.phrases.language to populate the dropdown
+	    for (let langKey in this.phrases.currentLanguage.languages) {
+	        let item = document.createElement("a");
+	        item.classList.add("dropdown-item");
+	        item.href = "#";
+	        
+	        // Use the key lookup to get the language name
+	        item.innerText = this.phrases.currentLanguage.languages[langKey];
+	        item.setAttribute("data-lang", langKey);
+
+	        this.dropDown.appendChild(item);
+	    }
+	}
+
 
     addDropdownListeners() {
         // Attach click listeners to dropdown items
         this.dropDown.addEventListener("click", (event) => {
             if (event.target.classList.contains("dropdown-item")) {
-                this.changeLanguage(event.target.innerText);
+            	console.log(event.target.getAttribute("data-lang"));
+                this.changeLanguage(event.target.getAttribute("data-lang"));
             }
         });
     }
 
     changeLanguage(language) {
         //this.currentLanguage = language;
+		this.phrases.setLanguage(language);
         
         // Highlight the selected language in the dropdown
         for (let item of this.dropDown.children) {
-            if (item.innerText === language) {
+            if (item.getAttribute("data-lang") === language) {
                 item.classList.add("bg-secondary");
             } else {
                 item.classList.remove("bg-secondary");
@@ -135,13 +147,14 @@ class Phrases {
         try {
             const response = await fetch(url);
             const data = await response.json();
+            console.log(data);
 
             this.startrecording.languages = data.startrecording;
             this.stoprecording.languages = data.stoprecording;
             this.processing.languages = data.processing;
             this.responding.languages = data.responding;
             this.language.languages = data.language;
-            this.currentLanguage.languages = data.language;
+            this.currentLanguage.languages = data.currentLanguage;
         } catch (error) {
             console.error("Error loading data from JSON:", error);
         }
