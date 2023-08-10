@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 class Phrases {
-    constructor(startrecordingDiv, stoprecordingDiv, processingDiv, respondingDiv, languageDiv, appDiv, feedbackDiv, aboutDiv) {
+    constructor(startrecordingDiv, stoprecordingDiv, processingDiv, respondingDiv, speakingDiv, languageDiv, appDiv, feedbackDiv, aboutDiv) {
         this.startrecording = new LanguageDiv(startrecordingDiv, {
             [DEFAULT_LANGUAGE_KEY]: "Ask Me Something!",
             // Add other languages here...
@@ -124,6 +124,10 @@ class Phrases {
             // Add other languages here...
         });
         this.responding = new LanguageDiv(respondingDiv, {
+            [DEFAULT_LANGUAGE_KEY]: "Responding",
+            // Add other languages here...
+        });
+        this.speaking = new LanguageDiv(speakingDiv, {
             [DEFAULT_LANGUAGE_KEY]: "Responding",
             // Add other languages here...
         });
@@ -158,6 +162,7 @@ class Phrases {
         this.stoprecording.setLanguage(language);
         this.processing.setLanguage(language);
         this.responding.setLanguage(language);
+        this.speaking.setLanguage(language);
         this.language.setLanguage(language);
         this.currentLanguage.setLanguage(language);
         this.app.setLanguage(language);
@@ -175,6 +180,7 @@ class Phrases {
             this.stoprecording.languages = data.stoprecording;
             this.processing.languages = data.processing;
             this.responding.languages = data.responding;
+            this.speaking.languages = data.speaking;
             this.language.languages = data.language;
             this.currentLanguage.languages = data.currentLanguage;
             this.app.languages = data.app;

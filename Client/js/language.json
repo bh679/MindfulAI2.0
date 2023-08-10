@@ -39,17 +39,30 @@
         "zh-CN": "处理中"
     },
     "responding": {
-        "en": "Responding",
-        "es": "Respondiendo",
-        "fr": "Réponse",
-        "hi": "प्रतिसाद देना",
-        "it": "Rispondendo",
-        "de": "Antworten",
-        "pl": "Odpowiadanie",
-        "pt": "Respondendo",
-        "zh-TW": "回應中",
-        "zh-TR": "回應中",
-        "zh-CN": "回应中"
+        "en": "Wording Response",
+        "es": "Formulando Respuesta",
+        "fr": "Formulation de Réponse",
+        "hi": "प्रतिसाद शब्दीकृत करना",
+        "it": "Formulando Risposta",
+        "de": "Antwort Formulieren",
+        "pl": "Formułowanie Odpowiedzi",
+        "pt": "Formulando Resposta",
+        "zh-TW": "正在構造回應",
+        "zh-TR": "正在構造回應",
+        "zh-CN": "正在构造回应"
+    },
+    "speaking": {
+        "en": "Speaking",
+        "es": "Hablando",
+        "fr": "Parlant",
+        "hi": "बोल रहा है",
+        "it": "Parlando",
+        "de": "Sprechend",
+        "pl": "Mówiąc",
+        "pt": "Falando",
+        "zh-TW": "正在說話",
+        "zh-TR": "正在說話",
+        "zh-CN": "正在说话"
     },
     "language": {
         "en": "Language",

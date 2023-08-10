@@ -170,7 +170,7 @@
 
                 async function RecordToText() {
 
-                    recordButton.innerHTML = micFill + phrases.stoprecording;
+                    recordButton.innerHTML = micFill + languageManager.phrases.stoprecording.currentValue;
                     micEmpty.hidden = true;
                     micFill.hidden = false;
                     speechManager.StopSpeaking();
@@ -184,25 +184,25 @@
                 {
                     //update button
                     recordButton.disabled = true;
-                    recordButton.innerHTML = micEmpty + phrases.processing;
+                    recordButton.innerHTML = micEmpty + languageManager.phrases.processing.currentValue;
                     speechManager.voicing = true;
 
                     //transcribe results
                     var transcript = await transcribe(recordingChunk);
-                    recordButton.innerHTML = micEmpty + phrases.responding;
+                    recordButton.innerHTML = micEmpty + languageManager.phrases.responding.currentValue;
 
                     //save transcription
                     transcriptionDiv.innerHtml = transcript;
 
                     await app.UserTalk(transcript,FinishedSpeaking) ;
 
-                    recordButton.innerHTML = micEmpty + phrases.speaking;
+                    recordButton.innerHTML = volUp + languageManager.phrases.speaking.currentValue;
                     recordButton.disabled = false;
                 }
 
                 function FinishedSpeaking()
                 {
-                    recordButton.innerHTML = micEmpty + 'Start Recording';
+                    recordButton.innerHTML = micEmpty + languageManager.phrases.startrecording.currentValue;
                 }
 
                 const apiDomain = 'https://mindfulai.equalreality.com:3000';
