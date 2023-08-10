@@ -55,7 +55,7 @@ app.get('/text-to-speech', async (req, res, next) => {
     
     const { phrase, file } = req.query;
     
-    if (!key || !region || !phrase) res.status(404).send('Invalid query string');
+    if (!phrase) res.status(404).send('Invalid query string');
     
     let fileName = null;
     

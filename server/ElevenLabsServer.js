@@ -1,6 +1,7 @@
 //ElevenLAbsServer.js
 import axios from 'axios';
 import ENV from './env.js';
+import textToSpeech from './azure-cognitiveservices-speech.js';
 
 const ELEVENLABS_API_KEY = ENV.ELEVENLABS_API_KEY;
 
@@ -25,6 +26,25 @@ const Speak = async (req, res) => {
 
     console.log("VoiceId " + voiceId);
 
+    await GetFromEleven(text, voiceId, cacheKey, res);
+};
+
+const GetFromMS = async (text, voiceId, cacheKey, res) => {
+
+    // stream from file or memory
+    if (file && file === true) {
+        fileName = `./temp/stream-from-file-${timeStamp()}.mp3`;
+    }
+
+    const audioStream = await textToSpeech("australiaeast", text);
+    res.set({
+        'Content-Type': 'audio/mpeg',
+        'Transfer-Encoding': 'chunked'
+    });
+}
+
+const GetFromEleven = async (text, voiceId, cacheKey, res) => 
+{
     const headers = {
         'Accept': 'audio/mpeg',
         'xi-api-key': ELEVENLABS_API_KEY,
@@ -56,7 +76,7 @@ const Speak = async (req, res) => {
         console.error("Error fetching audio:", err);
         res.status(500).send('Failed to generate audio');
     }
-};
+}
 
 // Function to reset the cache
 const ResetCache = () => {
