@@ -4,6 +4,10 @@ import sdk from 'microsoft-cognitiveservices-speech-sdk';
 import { Buffer } from 'buffer';
 import { PassThrough } from 'stream';
 import fs from 'fs';
+import ENV from './env.js';
+
+// Extract API key from ENV
+const MS_AZURE_COG_API_KEY = ENV.MS_AZURE_COG_API_KEY;
 
 /**
  * Node.js server code to convert text to speech
@@ -13,7 +17,9 @@ import fs from 'fs';
  * @param {*} text text to convert to audio/speech
  * @param {*} filename optional - best for long text - temp file for converted speech/audio
  */
-const textToSpeech = async (key, region, text, filename)=> {
+const textToSpeech = async (/*key, */region, text, filename)=> {
+
+    let key = MS_AZURE_COG_API_KEY;
     
     // convert callback function to promise
     return new Promise((resolve, reject) => {

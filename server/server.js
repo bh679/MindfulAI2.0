@@ -53,7 +53,7 @@ app.get('/Restart', function (req, res) {
 /* eslint-disable no-unused-vars */
 app.get('/text-to-speech', async (req, res, next) => {
     
-    const { key, region, phrase, file } = req.query;
+    const { phrase, file } = req.query;
     
     if (!key || !region || !phrase) res.status(404).send('Invalid query string');
     
@@ -64,7 +64,7 @@ app.get('/text-to-speech', async (req, res, next) => {
         fileName = `./temp/stream-from-file-${timeStamp()}.mp3`;
     }
     
-    const audioStream = await textToSpeech(key, region, phrase, fileName);
+    const audioStream = await textToSpeech("australiaeast", phrase, fileName);
     res.set({
         'Content-Type': 'audio/mpeg',
         'Transfer-Encoding': 'chunked'
