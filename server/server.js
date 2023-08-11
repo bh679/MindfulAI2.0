@@ -6,6 +6,7 @@ import cors from 'cors';
 import axios from 'axios';
 import fs from 'fs';
 import express from 'express';
+import range = from 'express-range';
 import https from 'https';
 
 // Define HTTPS credentials using the File System (fs) to read the key and certificate files
@@ -32,6 +33,9 @@ app.use(cors());
 // Tell Express to parse JSON in the body of incoming requests.
 app.use(express.json());
 
+// Use the express-range middleware
+app.use(range({ accept: 'bytes' }));
+
 // Log all incoming requests
 app.use(function(req, res, next) {
     console.log(`${req.method} request for '${req.url}'`);
@@ -53,7 +57,7 @@ app.get('/Restart', function (req, res) {
 /* eslint-disable no-unused-vars */
 app.get('/text-to-speech', async (req, res, next) => {
     
-    const { phrase, file, voice, language } = req.query;
+    const { phrase, file, language, voice } = req.query;
 
     console.log(voice);
     console.log(language);
@@ -67,7 +71,7 @@ app.get('/text-to-speech', async (req, res, next) => {
         fileName = `./temp/stream-from-file-${timeStamp()}.mp3`;
     }
     
-    const audioStream = await textToSpeech("australiaeast", phrase, fileName);
+    const audioStream = await textToSpeech("australiaeast", phrase, language, voice);//, fileName);
     res.set({
         'Content-Type': 'audio/mpeg',
         'Transfer-Encoding': 'chunked'

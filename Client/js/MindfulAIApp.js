@@ -46,7 +46,7 @@ class MindfulAIApp {
         //GPTGen.promptWrapper.prePrompt = CurrentPainting.Prompt + galleryData.instructions + galleryData.Questions + languagePrompt + galleryData.valuesPrompt;
         var prompt = this.currentPainting.personality 
              + this.galleryManager.gallery.instructions 
-            // + this.languageManager.languagePrompt() 
+             + this.languageManager.languagePrompt() 
              + (this.galleryManager.gallery.valuesPrompt ? this.galleryManager.gallery.valuesPrompt : "") 
              + ": {" + text + "}";
 
@@ -61,20 +61,21 @@ class MindfulAIApp {
         let voice = this.GetVoice();
 
         //check language
-        //if(voice.eleven)
-        //    await speechManager.Speak(response,voice.id, callback);
-        //else
-
-        console.log(this.languageManager.currentLanguage);
-        console.log(this.languageManager.currentLanguage.id);
-            await speechService.Speak(response,voice.id, this.languageManager.currentLanguage.id, callback);
+        if(voice.eleven)
+            await speechManager.Speak(response,voice.id, callback);
+        else
+        {
+            console.log(this.languageManager.currentLanguage);
+            console.log(this.languageManager.currentLanguage.id);
+            await speechService.Speak(response, voice.id, this.languageManager.currentLanguage.APIKey, callback);
+        }
     }
 
     GetVoice()
     {
         if(this.languageManager.isLanguageSupportedForPlatform('ElevenLabs'))
             return {eleven: true, id: "21m00Tcm4TlvDq8ikWAM" };
-        else
+        else 
             return {eleven: false, id: "21m00Tcm4TlvDq8ikWAM" };
     }
 

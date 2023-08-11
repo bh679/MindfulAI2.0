@@ -78,14 +78,14 @@ class LanguageManager
      * @return {LanguageOption | null} - Returns the LanguageOption object if found, otherwise returns null.
      */
     getLanguage(languageId) {
-        for (let languageName in this.languageOptions) {
-            const language = this.languageOptions[languageName];
-            if (language.id.includes(languageId)) {
-                return language;
-            }
-        }
-        console.log("Cant find language " + languageId);
-        return null;
+
+    	if(this.optionsManager.languageOptions[languageId] == null)
+    	{
+        	console.log("Cant find language " + languageId);
+    		return null;
+		}
+
+    	return this.optionsManager.languageOptions[languageId];
     }
 
 	/**

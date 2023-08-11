@@ -2,12 +2,14 @@
  * Represents a single language option.
  */
 class LanguageOption {
-  constructor(englishLanguageName, id) {
+  constructor(englishLanguageName, id, APIKey) {
     /** Name of the language in English. */
     this.englishLanguageName = englishLanguageName;
     
     /** Language ID (not used yet). */
-    this.languageID = id;
+    this.id = id;
+
+    this.APIKey = APIKey;
     
     /** List of platforms that support this language. */
     this.platforms = [];
@@ -60,7 +62,7 @@ processSharedLanguages(data) {
             }) 
             {
               if (!this.languageOptions[ttsLanguage.id]) {
-                this.languageOptions[ttsLanguage.id] = new LanguageOption(ttsLanguage.name, ttsLanguage.id);
+                this.languageOptions[ttsLanguage.id] = new LanguageOption(ttsLanguage.name, ttsLanguage.id, ttsLanguage.APIKey);
               }
               if (!this.languageOptions[ttsLanguage.id].platforms.includes(platform)) {
                 this.languageOptions[ttsLanguage.id].platforms.push(platform);

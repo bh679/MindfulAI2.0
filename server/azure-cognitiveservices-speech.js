@@ -17,7 +17,7 @@ const MS_AZURE_COG_API_KEY = ENV.MS_AZURE_COG_API_KEY;
  * @param {*} text text to convert to audio/speech
  * @param {*} filename optional - best for long text - temp file for converted speech/audio
  */
-const textToSpeech = async (/*key, */region, text, filename)=> {
+const textToSpeech = async (/*key, */region, text, language, voice, filename)=> {
 
     let key = MS_AZURE_COG_API_KEY;
     
@@ -26,8 +26,8 @@ const textToSpeech = async (/*key, */region, text, filename)=> {
         
         const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
         speechConfig.speechSynthesisOutputFormat = 5; // mp3
-        speechConfig.SpeechSynthesisLanguage = "en-US"; 
-        speechConfig.SpeechSynthesisVoiceName = "en-US-JennyNeural";
+        speechConfig.SpeechSynthesisLanguage = language; //language
+        speechConfig.SpeechSynthesisVoiceName = "en-US-JennyNeural";//voice
         
         let audioConfig = null;
         
