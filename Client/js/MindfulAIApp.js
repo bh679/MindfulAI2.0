@@ -58,7 +58,18 @@ class MindfulAIApp {
         console.log(response);
 
         //read it out
-        await speechManager.Speak(response,"21m00Tcm4TlvDq8ikWAM", callback);
+        voice = this.GetVoice();
+
+        //check language
+        if(voice.eleven)
+            await speechManager.Speak(response,voice.id, callback);
+        else
+            awaitspeechService.Speak(response,voice.id, callback);
+    }
+
+    GetVoice()
+    {
+        return {eleven: true, id: "21m00Tcm4TlvDq8ikWAM" };
     }
 
     Next()

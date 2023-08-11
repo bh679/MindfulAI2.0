@@ -26,6 +26,8 @@ const textToSpeech = async (/*key, */region, text, filename)=> {
         
         const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
         speechConfig.speechSynthesisOutputFormat = 5; // mp3
+        speechConfig.SpeechSynthesisLanguage = "en-US"; 
+        speechConfig.SpeechSynthesisVoiceName = "en-US-JennyNeural";
         
         let audioConfig = null;
         
