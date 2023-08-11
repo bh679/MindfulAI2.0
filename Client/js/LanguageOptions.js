@@ -1,20 +1,35 @@
-// Represents individual language options with their details
+/**
+ * Represents a single language option.
+ */
 class LanguageOption {
-  constructor(englishName, localName = "", languageID = "") {
-    this.englishName = englishName; // English representation of the language
-    this.localName = localName;     // Local representation (not used yet)
-    this.languageID = languageID;   // Identifier for the language (not used yet)
-    this.platforms = [];           // Platforms that support this language
+  constructor(englishLanguageName) {
+    /** Name of the language in English. */
+    this.englishLanguageName = englishLanguageName;
+    
+    /** Local name of the language (not used yet). */
+    this.localLanguageName = null;
+    
+    /** Language ID (not used yet). */
+    this.languageID = null;
+    
+    /** List of platforms that support this language. */
+    this.platforms = [];
   }
 }
 
-// Manages and compiles all language options
+/**
+ * Manages language options and operations related to them.
+ */
 class LanguageOptionsManager {
   constructor() {
-    this.data = {};
+    /** Dictionary to store the LanguageOption objects. */
+    this.languageOptions = {};
   }
 
-  // Fetches data from a URL and saves it
+  /** 
+     * Fetches data from a URL and saves it.
+     * @param {string} url - The URL to fetch data from.
+     */
   async fetchData(url) {
     try {
       const response = await fetch(url);
@@ -22,44 +37,45 @@ class LanguageOptionsManager {
         throw new Error('Network response was not ok');
       }
       this.data = await response.json();
+      this.processSharedLanguages(this.data);
+      console.log(this.languageOptions);
+
     } catch (error) {
       console.error('There was a problem fetching the language options:', error);
     }
   }
 
-  // Compiles a list of shared language options from TextToSpeech and SpeechToText
-  compileSharedLanguages() {
-    const languageObjects = {}; // Dictionary to hold compiled language objects
-    
-    // Iterate through SpeechToText languages
-    for (const platform in this.data.SpeechToText) {
-      this.data.SpeechToText[platform].forEach(lang => {
-        if (!languageObjects[lang]) {
-          languageObjects[lang] = new LanguageOption(lang);
+  /**
+   * Processes shared languages from provided data.
+   * @param {Object} data - The data containing language options for platforms.
+   */
+  processSharedLanguages(data) {
+    const speechToTextPlatforms = data.SpeechToText || {};
+    const textToSpeechPlatforms = data.TextToSpeech || {};
+
+    for (let platform in speechToTextPlatforms) {
+      speechToTextPlatforms[platform].forEach(sttLanguage => {
+        for (let ttsPlatform in textToSpeechPlatforms) {
+          textToSpeechPlatforms[ttsPlatform].forEach(ttsLanguage => {
+            if (ttsLanguage.toLowerCase().includes(sttLanguage.toLowerCase()) || sttLanguage.toLowerCase().includes(ttsLanguage.toLowerCase())) {
+              if (!this.languageOptions[ttsLanguage]) {
+                this.languageOptions[ttsLanguage] = new LanguageOption(ttsLanguage);
+              }
+              if (!this.languageOptions[ttsLanguage].platforms.includes(platform)) {
+                this.languageOptions[ttsLanguage].platforms.push(platform);
+              }
+              if (!this.languageOptions[ttsLanguage].platforms.includes(ttsPlatform)) {
+                this.languageOptions[ttsLanguage].platforms.push(ttsPlatform);
+              }
+            }
+          });
         }
-        languageObjects[lang].platforms.push(platform);
       });
     }
-
-    // Iterate through TextToSpeech languages ensuring the language is also supported in SpeechToText
-    for (const platform in this.data.TextToSpeech) {
-      this.data.TextToSpeech[platform].forEach(lang => {
-        if (languageObjects[lang]) { // Only add if language already exists (i.e., is shared between both)
-          languageObjects[lang].platforms.push(platform);
-        }
-      });
-    }
-
-    // Return the compiled dictionary of shared language objects
-    return languageObjects;
+    return this.languageOptions;
   }
 }
 
 // Example usage:
-/*
-const manager = new LanguageOptionsManager();
-manager.fetchData('YOUR_URL_HERE').then(() => {
-  const sharedLanguages = manager.compileSharedLanguages();
-  console.log(sharedLanguages);
-});
-*/
+//const manager = new LanguageOptionsManager();
+//manager.fetchData('YOUR_URL_HERE'); // Replace 'YOUR_URL_HERE' with the URL you want to fetch data from.

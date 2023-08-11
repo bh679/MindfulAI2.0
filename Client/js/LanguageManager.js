@@ -9,6 +9,9 @@ class LanguageManager
 		this.dropDown = dropDown;
 		this.title = title;
 
+		this.optionsManager = new LanguageOptionsManager();
+		this.optionsManager.fetchData('./js/languageOptions.json');
+
 		this.init();
 		
 	}

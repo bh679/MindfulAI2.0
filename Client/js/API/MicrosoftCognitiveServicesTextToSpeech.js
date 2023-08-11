@@ -34,8 +34,8 @@ class MSSpeechService {
 
 // Usage
 const speechService = new MSSpeechService();
-speechService.Speak("Hello World", "en-US", () => {
+/*speechService.Speak("Hello World", "en-US", () => {
   console.log("Speech finished playing");
 }).catch(err => {
   console.error("Error:", err.message);
-});
+});*/
