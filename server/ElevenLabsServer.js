@@ -1,7 +1,7 @@
 //ElevenLAbsServer.js
 import axios from 'axios';
 import ENV from './env.js';
-import textToSpeech from './azure-cognitiveservices-speech.js';
+import { textToSpeech } from './azure-cognitiveservices-speech.js';
 
 const ELEVENLABS_API_KEY = ENV.ELEVENLABS_API_KEY;
 

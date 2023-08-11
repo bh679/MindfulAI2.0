@@ -6,7 +6,7 @@ import cors from 'cors';
 import axios from 'axios';
 import fs from 'fs';
 import express from 'express';
-import range = from 'express-range';
+import range from 'express-range';
 import https from 'https';
 
 // Define HTTPS credentials using the File System (fs) to read the key and certificate files
@@ -24,7 +24,7 @@ let promptResponse = {};
 import PromptGPT from './PromptGPT.js';
 import { Speak, ResetCache } from './ElevenLabsServer.js'; 
 import Transcribe from './WhisperTranscriberServer.js';
-import textToSpeech from './azure-cognitiveservices-speech.js';
+import { textToSpeech, getStreamSize } from './azure-cognitiveservices-speech.js';
 
 
 // Use cors middleware for handling Cross-Origin Resource Sharing
@@ -55,29 +55,39 @@ app.get('/Restart', function (req, res) {
 
 // creates a temp file on server, the streams to client
 /* eslint-disable no-unused-vars */
-app.get('/text-to-speech', async (req, res, next) => {
-    
-    const { phrase, file, language, voice } = req.query;
+app.get('/text-to-speech', range({ accept: 'bytes' }), async (req, res, next) => {
 
-    console.log(voice);
-    console.log(language);
+    const { phrase, language, voice, file } = req.query;
     
-    if (!phrase) res.status(404).send('Invalid query string');
+    if (!phrase) return res.status(404).send('Invalid query string');
     
     let fileName = null;
-    
-    // stream from file or memory
-    if (file && file === true) {
-        fileName = `./temp/stream-from-file-${timeStamp()}.mp3`;
+
+    // Fetch the audio stream
+    const { stream: audioStream, size: audioStreamSize } = await textToSpeech("australiaeast", phrase, language, voice);
+
+
+    // Get file size
+    //const audioStreamSize = await getStreamSize(audioStream); // Assuming you implement a function to get stream size
+
+    const range = req.range(audioStreamSize);
+
+    if (range && range.type === 'bytes' && range.length === 1) {
+        const { start, end } = range[0];
+        const chunkSize = (end - start) + 1;
+        res.setHeader('Content-Range', `bytes ${start}-${end}/${audioStreamSize}`);
+        res.setHeader('Accept-Ranges', 'bytes');
+        res.setHeader('Content-Length', chunkSize);
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.status(206);  // Status for Partial Content
+        audioStream.pipe(res);
+    } else {
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Transfer-Encoding', 'chunked');
+        audioStream.pipe(res);
     }
-    
-    const audioStream = await textToSpeech("australiaeast", phrase, language, voice);//, fileName);
-    res.set({
-        'Content-Type': 'audio/mpeg',
-        'Transfer-Encoding': 'chunked'
-    });
-    audioStream.pipe(res);
 });
+
 
 app.get('/ping', function (req, res) {
     res.json({ status: 'Server is running!' });

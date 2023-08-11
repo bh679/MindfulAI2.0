@@ -46,24 +46,40 @@ const textToSpeech = async (/*key, */region, text, language, voice, filename)=> 
                 synthesizer.close();
                 
                 if (filename) {
-                    
-                    // return stream from file
                     const audioFile = fs.createReadStream(filename);
-                    resolve(audioFile);
+                    resolve({ stream: audioFile, size: fs.statSync(filename).size });
                     
                 } else {
-                    
                     // return stream from memory
                     const bufferStream = new PassThrough();
                     bufferStream.end(Buffer.from(audioData));
-                    resolve(bufferStream);
+                    resolve({ stream: bufferStream, size: audioData.length });
                 }
             },
             error => {
                 synthesizer.close();
                 reject(error);
             }); 
-    });
+        });
 };
 
-export default textToSpeech;
+//I can remove this funciotn, its export and imports
+const getStreamSize = async (audioStream) => {
+    return new Promise((resolve, reject) => {
+        const tmpFile = `./temp/stream-size-tmp-${timeStamp()}.mp3`;
+        const writeStream = fs.createWriteStream(tmpFile);
+        audioStream.pipe(writeStream);
+
+        writeStream.on('finish', () => {
+            const size = fs.statSync(tmpFile).size;
+            fs.unlinkSync(tmpFile);  // Clean up the temporary file
+            resolve(size);
+        });
+
+        writeStream.on('error', (error) => {
+            reject(error);
+        });
+    });
+}
+
+export { textToSpeech, getStreamSize };
