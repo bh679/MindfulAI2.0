@@ -6,9 +6,6 @@ class LanguageOption {
     /** Name of the language in English. */
     this.englishLanguageName = englishLanguageName;
     
-    /** Local name of the language (not used yet). */
-    this.localLanguageName = null;
-    
     /** Language ID (not used yet). */
     this.languageID = null;
     
