@@ -8,9 +8,7 @@ class LanguageManager
 	{
 		this.dropDown = dropDown;
 		this.title = title;
-
-		this.optionsManager = new LanguageOptionsManager();
-		this.optionsManager.fetchData('./js/languageOptions.json');
+		this.currentLanguage = null;
 
 		this.init();
 		
@@ -19,6 +17,9 @@ class LanguageManager
 	async init()
 	{
 
+
+		this.optionsManager = new LanguageOptionsManager();
+		await this.optionsManager.fetchData('./js/languageOptions.json');
 
 		// Example usage:
 		this.phrases = new Phrases(
@@ -36,6 +37,7 @@ class LanguageManager
 		await this.phrases.loadDataFromJSON('./js/language.json')
 
 		this.phrases.setLanguage(DEFAULT_LANGUAGE_KEY);
+        this.currentLanguage = this.getLanguage(DEFAULT_LANGUAGE_KEY);
 		
 
 		this.populateDropdown();
@@ -70,6 +72,33 @@ class LanguageManager
 	    }
 	}
 
+	/**
+     * Returns a language based on its ID.
+     * @param {string} languageId - The ID of the desired language.
+     * @return {LanguageOption | null} - Returns the LanguageOption object if found, otherwise returns null.
+     */
+    getLanguage(languageId) {
+        for (let languageName in this.languageOptions) {
+            const language = this.languageOptions[languageName];
+            if (language.id.includes(languageId)) {
+                return language;
+            }
+        }
+        console.log("Cant find language " + languageId);
+        return null;
+    }
+
+	/**
+     * Checks if a given language supports a specific platform.
+     * @param {string} targetPlatform - The name of the platform to check against.
+     * @return {boolean} - Returns true if the language supports the platform, otherwise false.
+     */
+    isLanguageSupportedForPlatform(targetPlatform) {
+        if (this.currentLanguage) {
+            return this.currentLanguage.platforms.includes(targetPlatform);
+        }
+        return false;
+    }
 
     addDropdownListeners() {
         // Attach click listeners to dropdown items
@@ -82,7 +111,7 @@ class LanguageManager
     }
 
     changeLanguage(language) {
-        //this.currentLanguage = language;
+        this.currentLanguage = this.getLanguage(language);
 		this.phrases.setLanguage(language);
         
         // Highlight the selected language in the dropdown

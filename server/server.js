@@ -53,7 +53,10 @@ app.get('/Restart', function (req, res) {
 /* eslint-disable no-unused-vars */
 app.get('/text-to-speech', async (req, res, next) => {
     
-    const { phrase, file } = req.query;
+    const { phrase, file, voice, language } = req.query;
+
+    console.log(voice);
+    console.log(language);
     
     if (!phrase) res.status(404).send('Invalid query string');
     

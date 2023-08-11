@@ -2,12 +2,12 @@
  * Represents a single language option.
  */
 class LanguageOption {
-  constructor(englishLanguageName) {
+  constructor(englishLanguageName, id) {
     /** Name of the language in English. */
     this.englishLanguageName = englishLanguageName;
     
     /** Language ID (not used yet). */
-    this.languageID = null;
+    this.languageID = id;
     
     /** List of platforms that support this language. */
     this.platforms = [];
@@ -46,7 +46,7 @@ class LanguageOptionsManager {
    * Processes shared languages from provided data.
    * @param {Object} data - The data containing language options for platforms.
    */
-  processSharedLanguages(data) {
+processSharedLanguages(data) {
     const speechToTextPlatforms = data.SpeechToText || {};
     const textToSpeechPlatforms = data.TextToSpeech || {};
 
@@ -54,15 +54,19 @@ class LanguageOptionsManager {
       speechToTextPlatforms[platform].forEach(sttLanguage => {
         for (let ttsPlatform in textToSpeechPlatforms) {
           textToSpeechPlatforms[ttsPlatform].forEach(ttsLanguage => {
-            if (ttsLanguage.toLowerCase().includes(sttLanguage.toLowerCase()) || sttLanguage.toLowerCase().includes(ttsLanguage.toLowerCase())) {
-              if (!this.languageOptions[ttsLanguage]) {
-                this.languageOptions[ttsLanguage] = new LanguageOption(ttsLanguage);
+            // Comparing language IDs
+            sttLanguage.id.some(sttId => {
+              return ttsLanguage.id.includes(sttId);
+            }) 
+            {
+              if (!this.languageOptions[ttsLanguage.id]) {
+                this.languageOptions[ttsLanguage.id] = new LanguageOption(ttsLanguage.name, ttsLanguage.id);
               }
-              if (!this.languageOptions[ttsLanguage].platforms.includes(platform)) {
-                this.languageOptions[ttsLanguage].platforms.push(platform);
+              if (!this.languageOptions[ttsLanguage.id].platforms.includes(platform)) {
+                this.languageOptions[ttsLanguage.id].platforms.push(platform);
               }
-              if (!this.languageOptions[ttsLanguage].platforms.includes(ttsPlatform)) {
-                this.languageOptions[ttsLanguage].platforms.push(ttsPlatform);
+              if (!this.languageOptions[ttsLanguage.id].platforms.includes(ttsPlatform)) {
+                this.languageOptions[ttsLanguage.id].platforms.push(ttsPlatform);
               }
             }
           });
@@ -70,7 +74,8 @@ class LanguageOptionsManager {
       });
     }
     return this.languageOptions;
-  }
+}
+
 }
 
 // Example usage:

@@ -5,9 +5,9 @@ class MSSpeechService {
     this.audioType = "audio/mpeg";
   }
 
-  async Speak(text, voice, callBack) {
+  async Speak(text, voice, language, callBack) {
     // Construct the URL based on input
-    const url = `${this.serverSrc}?phrase=${encodeURIComponent(text)}&voice=${encodeURIComponent(voice)}`;
+    const url = `${this.serverSrc}?phrase=${encodeURIComponent(text)}&language=${encodeURIComponent(language)}&voice=${encodeURIComponent(voice)}`;
 
     try {
       const response = await fetch(url);

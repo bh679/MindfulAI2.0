@@ -58,18 +58,24 @@ class MindfulAIApp {
         console.log(response);
 
         //read it out
-        voice = this.GetVoice();
+        let voice = this.GetVoice();
 
         //check language
-        if(voice.eleven)
-            await speechManager.Speak(response,voice.id, callback);
-        else
-            awaitspeechService.Speak(response,voice.id, callback);
+        //if(voice.eleven)
+        //    await speechManager.Speak(response,voice.id, callback);
+        //else
+
+        console.log(this.languageManager.currentLanguage);
+        console.log(this.languageManager.currentLanguage.id);
+            await speechService.Speak(response,voice.id, this.languageManager.currentLanguage.id, callback);
     }
 
     GetVoice()
     {
-        return {eleven: true, id: "21m00Tcm4TlvDq8ikWAM" };
+        if(this.languageManager.isLanguageSupportedForPlatform('ElevenLabs'))
+            return {eleven: true, id: "21m00Tcm4TlvDq8ikWAM" };
+        else
+            return {eleven: false, id: "21m00Tcm4TlvDq8ikWAM" };
     }
 
     Next()
