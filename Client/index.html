@@ -178,6 +178,8 @@
                 async function RecordToText() {
 
                     recordButton.innerHTML = micFill + languageManager.phrases.stoprecording.currentValue;
+                    recordButton.classList.add("danger");
+                    recordButton.classList.remove("btn-secondary");
                     micEmpty.hidden = true;
                     micFill.hidden = false;
                     app.speechManager.StopSpeaking();
@@ -192,6 +194,8 @@
                     //update button
                     recordButton.disabled = true;
                     recordButton.innerHTML = micEmpty + languageManager.phrases.processing.currentValue;
+                    recordButton.classList.remove("danger");
+                    recordButton.classList.add("btn-secondary");
                     app.speechManager.voicing = true;
 
                     //transcribe results
