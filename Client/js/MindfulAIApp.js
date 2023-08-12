@@ -40,7 +40,7 @@ class MindfulAIApp {
     }
 
     // TODO: Add speak button to talk to picture
-    async UserTalk(text, callback)
+    async UserTalk(text, callback1, callback2)
     {
         // TODO: Implement prompts with personality
         //GPTGen.promptWrapper.prePrompt = CurrentPainting.Prompt + galleryData.instructions + galleryData.Questions + languagePrompt + galleryData.valuesPrompt;
@@ -57,17 +57,20 @@ class MindfulAIApp {
 
         console.log(response);
 
+        if(callback1 != null)
+            callback1(response);
+
         //read it out
         let voice = this.GetVoice();
 
         //check language
         if(voice.eleven)
-            await this.speechManager.Speak(response,voice.id, callback);
+            await this.speechManager.Speak(response,voice.id, callback2);
         else
         {
             console.log(this.languageManager.currentLanguage);
             console.log(this.languageManager.currentLanguage.id);
-            await this.speechService.Speak(response, voice.id, this.languageManager.currentLanguage.APIKey, callback);
+            await this.speechService.Speak(response, voice.id, this.languageManager.currentLanguage.APIKey, callback2);
         }
     }
 
