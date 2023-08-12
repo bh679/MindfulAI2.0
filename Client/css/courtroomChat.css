@@ -8,7 +8,7 @@ Chat
 {
     /*flex-grow: 1;
     overflow-y: auto;  allows scrolling if chat content exceeds div height * /
-    max-height: calc(100vh - /* Height of the footer and other elements outside chat * /);
+    max-height: calc(100vh - /* Height of the footer and other elements outside chat * /);*/
     overflow-y: auto;
     overflow-x: hidden; /* */
 

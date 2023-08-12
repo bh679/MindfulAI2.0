@@ -85,7 +85,7 @@ class ChatLineUI
             this.profileImg.src = this.message.sender.profileUrl;
             if(this.message.sender.profileUrl == "")
                 this.profileImg.hidden = true;
-            
+
             this.senderIconDiv.appendChild(this.profileImg);
 
             this.senderNameDiv = document.createElement('div');
@@ -114,3 +114,5 @@ class ChatLineUI
         return this.groupDiv;
     }
 }
+
+
