@@ -228,10 +228,16 @@ class SpeechManager {
         }
     }
 
+    async buttonPressHandler()
+    {
+        await this.unlockAudioContext();
+        await this.resumeAudioContext();
+    }
+
 }
 
 // Create a new SpeechManager object
-let speechManager = new SpeechManager('https://brennan.games:3000', document.getElementById('SpeechManagerStatus'));
+//let speechManager = new SpeechManager('https://brennan.games:3000', document.getElementById('SpeechManagerStatus'));
 
 // Use this function to unlock the audio context after a user interaction (e.g., button press)
 async function buttonPressHandler() {

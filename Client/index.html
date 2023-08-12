@@ -172,7 +172,7 @@
                 // When the record button is clicked
                 recordButton.onclick = function() {
                     RecordToText();
-                    buttonPressHandler();
+                    app.speechManager.buttonPressHandler();
                 };
 
                 async function RecordToText() {
@@ -180,7 +180,7 @@
                     recordButton.innerHTML = micFill + languageManager.phrases.stoprecording.currentValue;
                     micEmpty.hidden = true;
                     micFill.hidden = false;
-                    speechManager.StopSpeaking();
+                    app.speechManager.StopSpeaking();
 
                     //start/stop reocrding
                     recorder.toggleRecording(FinishRecording);
@@ -192,7 +192,7 @@
                     //update button
                     recordButton.disabled = true;
                     recordButton.innerHTML = micEmpty + languageManager.phrases.processing.currentValue;
-                    speechManager.voicing = true;
+                    app.speechManager.voicing = true;
 
                     //transcribe results
                     var transcript = await transcribe(recordingChunk);

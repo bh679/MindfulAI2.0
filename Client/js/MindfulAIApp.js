@@ -62,12 +62,12 @@ class MindfulAIApp {
 
         //check language
         if(voice.eleven)
-            await speechManager.Speak(response,voice.id, callback);
+            await this.speechManager.Speak(response,voice.id, callback);
         else
         {
             console.log(this.languageManager.currentLanguage);
             console.log(this.languageManager.currentLanguage.id);
-            await speechService.Speak(response, voice.id, this.languageManager.currentLanguage.APIKey, callback);
+            await this.speechService.Speak(response, voice.id, this.languageManager.currentLanguage.APIKey, callback);
         }
     }
 
