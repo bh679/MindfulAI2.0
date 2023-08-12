@@ -17,7 +17,7 @@
         </script>
 
         <script src="./js/courtroomChat.js"></script>
-        <script src="./js/recorder.js"></script>
+        <script src="./modules/recorder/recorder.js"></script>
         <script src="./js/AskGPTClient.js"></script>
         <script src="./js/API/ElevenLabsClient.js"></script>
         <script src="./js/API/MicrosoftCognitiveServicesTextToSpeech.js"></script>
@@ -28,10 +28,10 @@
         <script src="./js/GalleryManager.js"></script>
         <script src="./js/MindfulAIApp.js"></script>
 
-
         <link rel="stylesheet" type="text/css" href="./css/courtroomChat.css">
         <link rel="stylesheet" type="text/css" href="./css/mindfulai.css">
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="./modules/recorder/micVis.css">
 
         <!-- Scales UI for mobile -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -57,12 +57,18 @@
             <div id="statusMessage"></div>
             <div id="transcription"></div>
 
-
             <div class="flex-grow-1 d-flex flex-column-reverse">
                 <div id="chat" style="padding: 10px"></div>
+
+
+                <!--div class="wave-container" hidden>
+                    <div class="wave"></div>
+                </div>
+                <script src="./modules/recorder/micVis.js"></script-->
+
             </div>
 
-            <div class="row bg-primary">
+            <div class="row bg-primary" style="--bs-gutter-x: 0rem;">
                 <div class="row" style="padding: 20px;">
                     <div class="col-3 d-flex justify-content-center">
                         <button id="previousButton" class="btn" onclick="app.Previous();" style="color:white">
