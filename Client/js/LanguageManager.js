@@ -27,6 +27,7 @@ class LanguageManager
 		    document.getElementById("recordButtonTxt"),
 		    document.getElementById("recordButtonTxt"),
 		    document.getElementById("recordButtonTxt"),
+		    document.getElementById("recordButtonTxt"),
 		    document.getElementById("languageTxt"),
 		    document.getElementById("appTxt"),
 		    document.getElementById("feedbackTxt"),
