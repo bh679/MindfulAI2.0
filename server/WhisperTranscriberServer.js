@@ -21,6 +21,7 @@ export default [upload.single('file'), async (req, res) => {
 
     // Extract the audio file from the request
     const audioFile = req.file;
+    const languagePrompt = req.body.languagePrompt || "";  // default to empty if not provided
 
     // Log the received file for debugging purposes
     console.log(audioFile);
@@ -30,6 +31,8 @@ export default [upload.single('file'), async (req, res) => {
     const formData = new FormData();
     formData.append('file', audioFile.buffer, { filename: 'audio.wav', contentType: 'audio/wav' });
     formData.append('model', 'whisper-1');
+    formData.append('prompt', languagePrompt);  // Add the prompt to the API request
+
 
     // Make the API request
     try {

@@ -302,6 +302,9 @@
                     // Append the Blob object to the FormData object under the key 'file'
                     formData.append('file', audioData, 'audio.wav');
 
+                    // Append the language prompt to the FormData
+                    formData.append('languagePrompt', "Hello, Im speaking in "+app.languageManager.currentLanguage.currentValue);
+
                     // Send a POST request to the Whisper API with the FormData object in the body
                     const response = await fetch(apiDomain + '/Transcribe', {
                         method: 'POST',
