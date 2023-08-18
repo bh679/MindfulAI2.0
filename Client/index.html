@@ -24,6 +24,7 @@
         <script src="./js/icons.js"></script>
         <script src="./js/LanguageOptions.js"></script>
         <script src="./js/LanguageManager.js"></script>
+        <script src="./js/GalleryLookUp.js"></script>
         <script src="./js/GalleryDataManager.js"></script>
         <script src="./js/GalleryManager.js"></script>
         <script src="./js/MindfulAIApp.js"></script>
@@ -153,6 +154,23 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
         <script>
+
+
+            // Usage:
+            const url = "./data/GallerysData.json";
+            const dataFetcher = new DataFetcher(url);
+
+            // To start the app
+            const app = new MindfulAIApp();
+
+            dataFetcher.fetchData().then(() => {
+                const galGata = dataFetcher.getDataById();
+                console.log(galGata);  // Log the data for id "1"
+                if(galGata != null)
+                    app.dataURL = galGata.url;
+                app.Start();
+            });
+
             const chatDiv = document.getElementById('chat');
 
             //https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52
@@ -425,6 +443,8 @@
                     if (languageDropdown.hasClass('show')) {
                         languageDropdown.removeClass('show');
                         languageToggler.removeClass('show').attr('aria-expanded', 'false');
+                        navbarMenu.removeClass('show');
+                        navbarToggler.attr('aria-expanded', 'false');
                     }
                 }
             });

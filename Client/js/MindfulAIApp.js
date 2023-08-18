@@ -1,7 +1,7 @@
 //MindfulAIApp.js
 
 class MindfulAIApp {
-    constructor() {
+    constructor(url) {
 
         this.galleryManager = new GalleryManager();
         this.currentPainting;
@@ -10,7 +10,10 @@ class MindfulAIApp {
         // Create a new SpeechManager object
         this.speechManager = new SpeechManager('https://mindfulai.equalreality.com:3000', document.getElementById('statusMessage'));
         
-        this.dataURL = 'https://mindfulai.equalreality.com/wp-content/uploads/2023/04/Gallery-2.json';
+        if(url == null)
+            this.dataURL = 'https://mindfulai.equalreality.com/wp-content/uploads/2023/04/Gallery-2.json';
+        else
+            this.dataURL = url;
     }
 
     // The main function to start the application logic
@@ -119,6 +122,3 @@ class MindfulAIApp {
 
 }
 
-// To start the app
-const app = new MindfulAIApp();
-app.Start();
