@@ -100,9 +100,13 @@
             <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
               <div class="container-fluid">
                 <a class="navbar-brand" href="#">MindfulAI</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
+                <div>
+                    <button id="LanguageIconButton" class="navbar-toggler">
+                    </button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                   <ul class="navbar-nav me-auto">
                     <li class="nav-item">
@@ -162,10 +166,13 @@
                 const transcriptionDiv = document.getElementById('transcription');
                 const languageHeadingDropdown = document.getElementById('languageHeading');
                 const languageDropdown = document.getElementById('languageDropdown');
+                const LanguageIconButton = document.getElementById('LanguageIconButton');
 
 
                 languageManager = new LanguageManager(languageDropdown, languageHeadingDropdown); 
                 app.languageManager = languageManager;
+
+                LanguageIconButton.innerHTML = globe2_30x30;
 
                 const chat = new MessageUI(chatDiv);
 
@@ -382,6 +389,46 @@
 
         // Attach the function to the scroll event of the chat box
         chatDiv.addEventListener('scroll', adjustMessageOpacity);
+
+
+
+
+
+        $(document).ready(function() {
+            // Cache DOM elements for better performance
+            var navbarMenu = $('#navbarColor01');
+            var navbarToggler = $('.navbar-toggler');
+            var languageDropdown = $('#languageDropdown');
+            var languageToggler = $('#languageHeading');
+            var shortcutButton = $('#LanguageIconButton');
+
+            shortcutButton.click(function() {
+                // Toggle the navbar
+                if (!navbarMenu.hasClass('show')) {
+                    navbarMenu.addClass('show');
+                    navbarToggler.attr('aria-expanded', 'true');
+                }
+
+                // Open the language dropdown
+                if (!languageDropdown.hasClass('show')) {
+                    languageDropdown.addClass('show');
+                    languageToggler.addClass('show').attr('aria-expanded', 'true');
+                }
+            });
+
+            // Close the dropdown if clicked outside
+            $(document).click(function(event) {
+                if (!$(event.target).closest(shortcutButton).length && 
+                    !$(event.target).closest(languageDropdown).length && 
+                    !$(event.target).closest(languageToggler).length) {
+                    
+                    if (languageDropdown.hasClass('show')) {
+                        languageDropdown.removeClass('show');
+                        languageToggler.removeClass('show').attr('aria-expanded', 'false');
+                    }
+                }
+            });
+        });
 
 
 
