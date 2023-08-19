@@ -40,6 +40,12 @@ class MessageUI
         this.UpdateChat(this.messages, true);
     }
 
+    Reset()
+    {
+        this.messages = [];
+        this.chatDiv.innerHTML = '';
+    }
+
 }
 
 

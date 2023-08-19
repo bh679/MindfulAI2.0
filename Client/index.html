@@ -72,7 +72,7 @@
             <div class="row bg-primary" style="--bs-gutter-x: 0rem;">
                 <div class="row" style="padding: 20px;">
                     <div class="col-3 d-flex justify-content-center">
-                        <button id="previousButton" class="btn" onclick="app.Previous();" style="color:white">
+                        <button id="previousButton" class="btn" onclick="chat.Reset(); app.Previous(); Intro(2);" style="color:white">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
                               <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"/>
                             </svg>
@@ -89,7 +89,7 @@
                         <div id="recordButtonTxt"></div>
                     </button>
                     <div class="col-3 d-flex justify-content-center" >
-                        <button id="nextButton" class="btn" onclick="app.Next();" style="color:white">
+                        <button id="nextButton" class="btn" onclick="chat.Reset(); app.Next(); Intro(2);" style="color:white">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
                               <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
                             </svg>
@@ -200,14 +200,14 @@
             //ArtGPT.voiceId = '21m00Tcm4TlvDq8ikWAM';
             ArtGPT.profileUrl = "";
 
-            async function Intro()
+            async function Intro(delayTime)
             {
                 console.log("#######Intro#######");
-                chat.messages = [];
+                chat.Reset();
                 SetArtGPT();
                 console.log("#######Intro1#######");
 
-                await delay(5000);
+                await delay(delayTime*1000);
                 chat.AddMessage(ArtGPT, "Hi! I am " + ArtGPT.name+".");
                 adjustMessageOpacity(); 
                 await delay(1000);
@@ -236,7 +236,7 @@
                         app.dataURL = galGata.url;
                     await app.Start();
 
-                    Intro();
+                    Intro(5);
                 });
 
                 LanguageIconButton.innerHTML = globe2_30x30;
