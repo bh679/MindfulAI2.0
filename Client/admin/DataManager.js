@@ -9,9 +9,10 @@ class AdminDataEditor
 {
 
 
-    constructor()
+    constructor(editor)
     {
-        this.output = document.getElementById('output');
+        //this.output = document.getElementById('jsonEditor');
+        this.editor = editor;
         this.saveButton = document.getElementById('saveButton');
         this.currentJSON = ""
     }
@@ -46,7 +47,11 @@ class AdminDataEditor
         // Usage:
         NodeJSON.GetNodeJSON(relativePath).then(data => {
             this.currentJSON = data;
-            this.output.textContent = JSON.stringify(data, null, 4);
+            this.editor.setValue(JSON.stringify(data, null, 4));
+
+            // Adjust the height initially
+            adjustEditorHeightToScreen(this.editor);
+
         }).catch(error => {
             // Handle any error that wasn't caught in GetNodeJSON
         });
@@ -60,8 +65,3 @@ class AdminDataEditor
     }
 
 }
-
-var adminDataEditor = new AdminDataEditor();
-document.addEventListener('DOMContentLoaded', function() {
-    adminDataEditor.Start();
-});
