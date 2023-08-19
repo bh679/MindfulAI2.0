@@ -155,27 +155,82 @@
 
         <script>
 
+            //Element references
+            const chatDiv = document.getElementById('chat');
 
+            const recordButton = {};
+            recordButton.button = document.getElementById('recordButton');
+            recordButton.text = document.getElementById('recordButtonTxt');
+            recordButton.icon = document.getElementById('recordButtonIcon');
+            const statusMessage = document.getElementById('statusMessage');
+            const transcriptionDiv = document.getElementById('transcription');
+            const languageHeadingDropdown = document.getElementById('languageHeading');
+            const languageDropdown = document.getElementById('languageDropdown');
+            const LanguageIconButton = document.getElementById('LanguageIconButton');
+
+
+            //Mindful AI
             // To start the app
             const app = new MindfulAIApp();
 
-            const chatDiv = document.getElementById('chat');
+            // Usage:
+            const url = "./data/GallerysData.json";
+            const gallerysDataFetcher = new DataFetcher(url);
+
+            var languageManager = new LanguageManager(languageDropdown, languageHeadingDropdown); 
+            app.languageManager = languageManager;
+
+            // Create a new Recorder object
+            const recorder = new Recorder(statusMessage);
+
+            //Chat UI
+            const chat = new MessageUI(chatDiv);
+
+            var User = {};
+            User.name = "You";
+            User.role = "";
+            User.class = "";
+            //ArtGPT.voiceId = '21m00Tcm4TlvDq8ikWAM';
+            User.profileUrl = "";
+
+            var ArtGPT = {};
+            ArtGPT.name = "";
+            ArtGPT.role = "GPT";
+            ArtGPT.class = "";
+            //ArtGPT.voiceId = '21m00Tcm4TlvDq8ikWAM';
+            ArtGPT.profileUrl = "";
+
+            async function Intro()
+            {
+                console.log("#######Intro#######");
+                chat.messages = [];
+                SetArtGPT();
+                console.log("#######Intro1#######");
+
+                await delay(5000);
+                chat.AddMessage(ArtGPT, "Hi! I am " + ArtGPT.name+".");
+                adjustMessageOpacity(); 
+                await delay(1000);
+                console.log("#######Intro2#######");
+                chat.AddMessage(ArtGPT, "Ask me anything!");
+                adjustMessageOpacity(); 
+                await delay(1000);
+                console.log("#######Intro3#######");
+                chat.AddMessage(ArtGPT, "You can ask me about what I am, my meaning or my purpose.");
+                adjustMessageOpacity(); 
+                console.log("#######Intro4#######");
+            }
+
+            function SetArtGPT()
+            {
+                ArtGPT.name = app.currentPainting.title;
+            }
 
             //https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52
             window.onload = function() {
 
-                function delay(ms) {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                }
-
-
-                // Usage:
-                const url = "./data/GallerysData.json";
-                const dataFetcher = new DataFetcher(url);
-
-
-                dataFetcher.fetchData().then(async () => {
-                    const galGata = dataFetcher.getDataById();
+                gallerysDataFetcher.fetchData().then(async () => {
+                    const galGata = gallerysDataFetcher.getDataById();
                     console.log(galGata);  // Log the data for id "1"
                     if(galGata != null)
                         app.dataURL = galGata.url;
@@ -184,78 +239,13 @@
                     Intro();
                 });
 
-                // Get the elements from the page
-                const recordButton = {};
-                recordButton.button = document.getElementById('recordButton');
-                recordButton.text = document.getElementById('recordButtonTxt');
-                recordButton.icon = document.getElementById('recordButtonIcon');
-                const statusMessage = document.getElementById('statusMessage');
-                const transcriptionDiv = document.getElementById('transcription');
-                const languageHeadingDropdown = document.getElementById('languageHeading');
-                const languageDropdown = document.getElementById('languageDropdown');
-                const LanguageIconButton = document.getElementById('LanguageIconButton');
-
-
-                languageManager = new LanguageManager(languageDropdown, languageHeadingDropdown); 
-                app.languageManager = languageManager;
-
                 LanguageIconButton.innerHTML = globe2_30x30;
-
-                const chat = new MessageUI(chatDiv);
-
-                const micEmpty = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16" id="mic-empty">
-                          <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
-                          <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0v5zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3z"/>
-                        </svg>`;
-
-                        
-                const micFill = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic-fill" viewBox="0 0 16 16" id="mic-fill">
-                          <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"/>
-                          <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
-                        </svg>`;
-
-                // Create a new Recorder object
-                const recorder = new Recorder(statusMessage);
 
                 // When the record button is clicked
                 recordButton.button.onclick = function() {
                     RecordToText();
                     app.speechManager.buttonPressHandler();
                 };
-
-
-                var User = {};
-                User.name = "You";
-                User.role = "";
-                User.class = "";
-                //ArtGPT.voiceId = '21m00Tcm4TlvDq8ikWAM';
-                User.profileUrl = "";//GetRandomJudgeProfileImage();
-
-                var ArtGPT = {};
-                    ArtGPT.name = "";//app.currentPainting.title;
-                    ArtGPT.role = "GPT";
-                    ArtGPT.class = "";
-                    //ArtGPT.voiceId = '21m00Tcm4TlvDq8ikWAM';
-                    ArtGPT.profileUrl = "";//GetRandomJudgeProfileImage();
-
-
-
-                async function Intro()
-                {
-                    SetArtGPT();
-                    chat.AddMessage(ArtGPT, "Hi! I am " + ArtGPT.name+".");
-                    await delay(500);
-                    chat.AddMessage(ArtGPT, "Ask me anything!");
-                    await delay(500);
-                    chat.AddMessage(ArtGPT, "You can me about what I am, my meaning or my purpose");
-                    adjustMessageOpacity(); 
-                }
-
-                function SetArtGPT()
-                {
-                    ArtGPT.name = app.currentPainting.title;
-                }
 
                 async function RecordToText() {
 
@@ -416,74 +406,77 @@
             //////////////////////
             
             function adjustMessageOpacity() {
-           // const chatBox = chatDiv;
-            const messages = chatDiv.querySelectorAll('.message');
-            const chatBottom = chatDiv.getBoundingClientRect().bottom;
+                // const chatBox = chatDiv;
+                const messages = chatDiv.querySelectorAll('.message');
+                const chatBottom = chatDiv.getBoundingClientRect().bottom;
 
-            messages.forEach(message => {
-                // Calculate distance of the message's bottom from the chatBox's bottom
-                const distanceFromBottom = chatBottom - message.getBoundingClientRect().bottom;
+                messages.forEach(message => {
+                    // Calculate distance of the message's bottom from the chatBox's bottom
+                    const distanceFromBottom = chatBottom - message.getBoundingClientRect().bottom;
 
-                // Calculate opacity based on distance from bottom
-                // Messages very close to the bottom have low opacity, while those farther away have full opacity.
-                const opacity = 1 - Math.min(1, distanceFromBottom / 500); // "200" is a factor you can adjust for desired fade effect
+                    // Calculate opacity based on distance from bottom
+                    // Messages very close to the bottom have low opacity, while those farther away have full opacity.
+                    const opacity = 1 - Math.min(1, distanceFromBottom / 500); // "200" is a factor you can adjust for desired fade effect
 
-                console.log(opacity);
+                    console.log(opacity);
 
-                // Apply the opacity to the message
-                message.style.opacity = opacity;
-            });
-        }
+                    // Apply the opacity to the message
+                    message.style.opacity = opacity;
+                });
+            }
 
-        // Call the function initially
-        adjustMessageOpacity();
+            // Call the function initially
+            adjustMessageOpacity();
 
-        // Attach the function to the scroll event of the chat box
-        chatDiv.addEventListener('scroll', adjustMessageOpacity);
-
-
+            // Attach the function to the scroll event of the chat box
+            chatDiv.addEventListener('scroll', adjustMessageOpacity);
 
 
 
-        $(document).ready(function() {
-            // Cache DOM elements for better performance
-            var navbarMenu = $('#navbarColor01');
-            var navbarToggler = $('.navbar-toggler');
-            var languageDropdown = $('#languageDropdown');
-            var languageToggler = $('#languageHeading');
-            var shortcutButton = $('#LanguageIconButton');
 
-            shortcutButton.click(function() {
-                // Toggle the navbar
-                if (!navbarMenu.hasClass('show')) {
-                    navbarMenu.addClass('show');
-                    navbarToggler.attr('aria-expanded', 'true');
-                }
 
-                // Open the language dropdown
-                if (!languageDropdown.hasClass('show')) {
-                    languageDropdown.addClass('show');
-                    languageToggler.addClass('show').attr('aria-expanded', 'true');
-                }
-            });
+            $(document).ready(function() {
+                // Cache DOM elements for better performance
+                var navbarMenu = $('#navbarColor01');
+                var navbarToggler = $('.navbar-toggler');
+                var languageDropdown = $('#languageDropdown');
+                var languageToggler = $('#languageHeading');
+                var shortcutButton = $('#LanguageIconButton');
 
-            // Close the dropdown if clicked outside
-            $(document).click(function(event) {
-                if (!$(event.target).closest(shortcutButton).length && 
-                    !$(event.target).closest(languageDropdown).length && 
-                    !$(event.target).closest(languageToggler).length) {
-                    
-                    if (languageDropdown.hasClass('show')) {
-                        languageDropdown.removeClass('show');
-                        languageToggler.removeClass('show').attr('aria-expanded', 'false');
-                        navbarMenu.removeClass('show');
-                        navbarToggler.attr('aria-expanded', 'false');
+                shortcutButton.click(function() {
+                    // Toggle the navbar
+                    if (!navbarMenu.hasClass('show')) {
+                        navbarMenu.addClass('show');
+                        navbarToggler.attr('aria-expanded', 'true');
                     }
-                }
+
+                    // Open the language dropdown
+                    if (!languageDropdown.hasClass('show')) {
+                        languageDropdown.addClass('show');
+                        languageToggler.addClass('show').attr('aria-expanded', 'true');
+                    }
+                });
+
+                // Close the dropdown if clicked outside
+                $(document).click(function(event) {
+                    if (!$(event.target).closest(shortcutButton).length && 
+                        !$(event.target).closest(languageDropdown).length && 
+                        !$(event.target).closest(languageToggler).length) {
+                        
+                        if (languageDropdown.hasClass('show')) {
+                            languageDropdown.removeClass('show');
+                            languageToggler.removeClass('show').attr('aria-expanded', 'false');
+                            navbarMenu.removeClass('show');
+                            navbarToggler.attr('aria-expanded', 'false');
+                        }
+                    }
+                });
             });
-        });
 
 
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
 
         </script>
     </body>
