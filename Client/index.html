@@ -18,6 +18,7 @@
 
         <script src="./js/courtroomChat.js"></script>
         <script src="./modules/recorder/recorder.js"></script>
+        <script src="./modules/NodeJSON/NodeJSON.js"></script>
         <script src="./js/AskGPTClient.js"></script>
         <script src="./js/API/ElevenLabsClient.js"></script>
         <script src="./js/API/MicrosoftCognitiveServicesTextToSpeech.js"></script>
@@ -174,8 +175,9 @@
             const app = new MindfulAIApp();
 
             // Usage:
-            const url = "./data/GallerysData.json";
+            const url = "/GallerysData.json";
             const gallerysDataFetcher = new DataFetcher(url);
+
 
             var languageManager = new LanguageManager(languageDropdown, languageHeadingDropdown); 
             app.languageManager = languageManager;

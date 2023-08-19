@@ -1,7 +1,7 @@
 //DataManager.js
 //https://chat.openai.com/share/5741dd6d-ce8f-4fbb-98a7-e0e609bc7c8a
 
-import { NodeJSON } from '../modules/NodeJSON/NodeJSON.js';
+//import { NodeJSON } from '../modules/NodeJSON/NodeJSON.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     fetch('https://mindfulai.equalreality.com:3000/jsonData?filename=GallerysData.json')

@@ -79,9 +79,9 @@ class Gallery {
 // Async function to fetch gallery data and populate a Gallery object.
 async function fetchAndPopulateGallery(url) {
   try {
-    const response = await fetch(url);  // Fetch data from the provided URL.
+    const data = await NodeJSON.GetNodeJSON(url);  // Fetch data from the provided URL.
 
-    // Check the response status.
+    /*// Check the response status.
     if (!response.ok) {
       console.error(`Failed to fetch from ${url}. Status: ${response.status}`);
       const textResponse = await response.text(); // Fetch the text response.
@@ -89,7 +89,7 @@ async function fetchAndPopulateGallery(url) {
       throw new Error('Network response was not ok'); // Throw an error if fetch failed.
     }
 
-    const data = await response.json();  // Parse the response data as JSON.
+    const data = await response.json();  // Parse the response data as JSON.*/
 
     const gallery = new Gallery();       // Create a new gallery object.
 

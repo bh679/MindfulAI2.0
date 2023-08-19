@@ -1,3 +1,7 @@
+//GalleryLookUp.js
+
+//import { NodeJSON } from '../modules/NodeJSON/NodeJSON.js';
+
 const hash = window.location.hash.substring(1);  // "section1"
 
 console.log(hash);
@@ -9,16 +13,10 @@ class DataFetcher {
     }
 
     async fetchData() {
-        try {
-            const response = await fetch(this.url);
 
-            console.log(response);
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const jsonData = await response.json();
+    	// Usage:
+	    NodeJSON.GetNodeJSON(this.url).then(data => {
+	        const jsonData = data;
             const dataArray = jsonData.data; 
 
             // Convert the array to a dictionary, keyed by 'id'
@@ -28,9 +26,10 @@ class DataFetcher {
             }, {});
 
             return this.data;
-        } catch (error) {
+	    }).catch(error => {
+	        // Handle any error that wasn't caught in GetNodeJSON
             console.error("There was a problem fetching the data:", error);
-        }
+	    });
     }
 
     // Method to get data by ID
@@ -39,6 +38,8 @@ class DataFetcher {
         return this.data[hash];
     }
 }
+
+
 
 /*/ Usage:
 const url = "https://mindfulai.equalreality.com/wp-content/uploads/2023/04/Gallery-2.json";

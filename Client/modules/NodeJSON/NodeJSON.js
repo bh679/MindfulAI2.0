@@ -1,7 +1,7 @@
 //NodeJSON.js
 //https://chat.openai.com/share/e1006f7c-fdaf-45ac-9ff5-ac74b01648b8
 
-export class NodeJSON {
+class NodeJSON {
     static BASE_URL = "https://mindfulai.equalreality.com:3000";
 
     static GetNodeJSON(relativePath) {
@@ -18,5 +18,3 @@ export class NodeJSON {
             });
     }
 }
-
-
