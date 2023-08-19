@@ -27,6 +27,7 @@ const sendJSON = (dataFolderPath, req, res) => {
 }
 
 const receiveAndStoreJSON = (dataFolderPath, req, res) => {
+    console.log("Incoming request body:", req.body.json);
     const absoluteDataFolderPath = path.resolve(dataFolderPath);
     const filePath = path.join(absoluteDataFolderPath, req.body.filename);
 
@@ -44,8 +45,8 @@ const receiveAndStoreJSON = (dataFolderPath, req, res) => {
             message = 'File not found. Creating and saving data.';
         }
         
-        const stringifiedData = JSON.stringify(req.body.json, null, 4);
-        fs.writeFileSync(filePath, stringifiedData, 'utf8');
+        //const stringifiedData = JSON.stringify(req.body.json, null, 4);
+        fs.writeFileSync(filePath, req.body.json, 'utf8');
         
         res.send(message);
     } catch (error) {
