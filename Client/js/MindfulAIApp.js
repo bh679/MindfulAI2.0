@@ -11,7 +11,7 @@ class MindfulAIApp {
         this.speechManager = new SpeechManager('https://mindfulai.equalreality.com:3000', document.getElementById('statusMessage'));
         
         if(url == null)
-            this.dataURL = 'https://mindfulai.equalreality.com/wp-content/uploads/2023/04/Gallery-2.json';
+            this.dataURL = "DharmaHall.json";//'https://mindfulai.equalreality.com/wp-content/uploads/2023/04/Gallery-2.json';
         else
             this.dataURL = url;
     }
