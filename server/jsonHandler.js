@@ -28,7 +28,9 @@ const sendJSON = (dataFolderPath, req, res) => {
 
 const receiveAndStoreJSON = (dataFolderPath, req, res) => {
     const absoluteDataFolderPath = path.resolve(dataFolderPath);
-    const filePath = path.join(absoluteDataFolderPath, req.query.filename);
+    const filePath = path.join(absoluteDataFolderPath, req.body.filename);
+
+    console.log(req.body);
 
     if (!filePath.startsWith(absoluteDataFolderPath)) {
         return res.status(400).send('Invalid file path');
@@ -42,7 +44,7 @@ const receiveAndStoreJSON = (dataFolderPath, req, res) => {
             message = 'File not found. Creating and saving data.';
         }
         
-        const stringifiedData = JSON.stringify(req.body, null, 4);
+        const stringifiedData = JSON.stringify(req.body.json, null, 4);
         fs.writeFileSync(filePath, stringifiedData, 'utf8');
         
         res.send(message);

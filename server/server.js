@@ -132,7 +132,7 @@ const dataFolderPath = './data';
 app.get('/jsonData', (req, res) => sendJSON(dataFolderPath, req, res));
 
 // Using receiveAndStoreJSON with rootFolderPath for the '/data' route
-app.post('/jsonData', (req, res) => receiveAndStoreJSON(dataFolderPath, req, res));
+app.post('/saveJSONData', (req, res) => receiveAndStoreJSON(dataFolderPath, req, res));
 
 
 // Define the port and HTTPS server options

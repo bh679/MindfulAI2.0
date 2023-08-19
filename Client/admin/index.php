@@ -32,7 +32,8 @@ $roles = implode(', ', $current_user->roles);
         <div id="buttonsContainer"></div>
 
         <h2>Gallery Data Output:</h2>
-        <pre id="output"></pre>
+        <button id="saveButton">save</button>
+        <pre contenteditable="true" id="output"></pre>
 
         <script type="module" src="DataManager.js"></script>
     </div>
