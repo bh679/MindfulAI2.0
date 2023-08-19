@@ -156,25 +156,34 @@
         <script>
 
 
-            // Usage:
-            const url = "./data/GallerysData.json";
-            const dataFetcher = new DataFetcher(url);
-
             // To start the app
             const app = new MindfulAIApp();
-
-            dataFetcher.fetchData().then(() => {
-                const galGata = dataFetcher.getDataById();
-                console.log(galGata);  // Log the data for id "1"
-                if(galGata != null)
-                    app.dataURL = galGata.url;
-                app.Start();
-            });
 
             const chatDiv = document.getElementById('chat');
 
             //https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52
             window.onload = function() {
+
+                function delay(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+
+
+                // Usage:
+                const url = "./data/GallerysData.json";
+                const dataFetcher = new DataFetcher(url);
+
+
+                dataFetcher.fetchData().then(async () => {
+                    const galGata = dataFetcher.getDataById();
+                    console.log(galGata);  // Log the data for id "1"
+                    if(galGata != null)
+                        app.dataURL = galGata.url;
+                    await app.Start();
+
+                    Intro();
+                });
+
                 // Get the elements from the page
                 const recordButton = {};
                 recordButton.button = document.getElementById('recordButton');
@@ -223,6 +232,31 @@
                 //ArtGPT.voiceId = '21m00Tcm4TlvDq8ikWAM';
                 User.profileUrl = "";//GetRandomJudgeProfileImage();
 
+                var ArtGPT = {};
+                    ArtGPT.name = "";//app.currentPainting.title;
+                    ArtGPT.role = "GPT";
+                    ArtGPT.class = "";
+                    //ArtGPT.voiceId = '21m00Tcm4TlvDq8ikWAM';
+                    ArtGPT.profileUrl = "";//GetRandomJudgeProfileImage();
+
+
+
+                async function Intro()
+                {
+                    SetArtGPT();
+                    chat.AddMessage(ArtGPT, "Hi! I am " + ArtGPT.name+".");
+                    await delay(500);
+                    chat.AddMessage(ArtGPT, "Ask me anything!");
+                    await delay(500);
+                    chat.AddMessage(ArtGPT, "You can me about what I am, my meaning or my purpose");
+                    adjustMessageOpacity(); 
+                }
+
+                function SetArtGPT()
+                {
+                    ArtGPT.name = app.currentPainting.title;
+                }
+
                 async function RecordToText() {
 
                     recordButton.text.innerText = languageManager.phrases.stoprecording.currentValue;
@@ -268,12 +302,8 @@
 
                 function GPTResponse(response)
                 {
-                    var ArtGPT = {};
-                    ArtGPT.name = app.currentPainting.title;
-                    ArtGPT.role = "GPT";
-                    ArtGPT.class = "";
-                    //ArtGPT.voiceId = '21m00Tcm4TlvDq8ikWAM';
-                    ArtGPT.profileUrl = "";//GetRandomJudgeProfileImage();
+                    SetArtGPT();
+
                     chat.AddMessage(ArtGPT,response);
                     adjustMessageOpacity();
                 }
