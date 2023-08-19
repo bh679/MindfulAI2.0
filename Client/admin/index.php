@@ -43,18 +43,20 @@ $roles = implode(', ', $current_user->roles);
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Visual</button>
+            <button class="nav-link active" id="profile-tab"          data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Visual</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="txtEditor-tab" data-bs-toggle="tab" data-bs-target="#txtEditor" type="button" role="tab" aria-controls="txtEditor" aria-selected="true">Json</button>
+            <button class="nav-link" id="txtEditor-tab"               data-bs-toggle="tab" data-bs-target="#txtEditor" type="button" role="tab" aria-controls="txtEditor" aria-selected="false">Json</button>
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="txtEditor" role="tabpanel" aria-labelledby="txtEditor-tab">
-              <button id="saveButton">save</button>
-              <pre contenteditable="true" id="jsonEditor"></pre>
-          </div>
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><div id="visualEditor"></div></div>
+            <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div id="visualEditor"></div>
+            </div>
+            <div class="tab-pane fade" id="txtEditor" role="tabpanel" aria-labelledby="txtEditor-tab">
+                  <button id="saveButton">save</button>
+                  <pre contenteditable="true" id="jsonEditor"></pre>
+            </div>
         </div>
 
         
@@ -69,9 +71,9 @@ $roles = implode(', ', $current_user->roles);
             adjustEditorHeightToScreen(editor);
 
             // Update the height every time the content changes
-            editor.getSession().on('change', function() {
-                adjustEditorHeight(editor);
-            });
+            /*editor.getSession().on('change', function() {
+                adjustEditorHeightToScreen(editor);
+            });*/
 
 
             var adminDataEditor = new AdminDataEditor(editor);

@@ -26,49 +26,54 @@ class AdminDataEditor
         });
     }
 
-    CreateButtons(galleries) {
+    async CreateButtons(galleries) {
         const container = document.getElementById('buttonsContainer');
 
-        galleries.forEach(gallery => {
+        for (const gallery of galleries) {
             const button = document.createElement('button');
             button.textContent = gallery.id;
-            button.addEventListener('click', () => {
-                this.DisplayGalleryData(gallery.url);
+            button.className = "btn btn-outline-info mt-3"; // Default class for buttons
+            button.addEventListener('click', async () => {
+                // Reset all buttons to default state
+                container.querySelectorAll('button').forEach(btn => {
+                    btn.className = "btn btn-outline-info mt-3"; // Default class
+                    btn.disabled = false; // Enable all buttons
+                });
+                
+                // Set the current button to selected state
+                button.className = "btn btn-primary mt-3";
+                button.disabled = true;
+
+                await this.DisplayGalleryData(gallery.url);
                 this.currentFile = gallery.url;
                 this.saveButton.onclick = () => {
                     adminDataEditor.Save(gallery.url);
                 };
-
             });
             container.appendChild(button);
-        });
+        }
     }
 
-    DisplayGalleryData(relativePath) {
 
-            console.log("DisplayGalleryData");
 
-        // Usage:
-        NodeJSON.GetNodeJSON(relativePath).then(data => {
+    async DisplayGalleryData(relativePath) {
+        try {
+            const data = await NodeJSON.GetNodeJSON(relativePath);
 
-            console.log("DisplayGalleryData2");
             this.currentJSON = data;
             this.UpdateVisualDisplay();
 
-            console.log("DisplayGalleryData3");
+
             this.editor.setValue(JSON.stringify(data, null, 4));
-
-            console.log("DisplayGalleryData4");
-
-            console.log("gallery");
 
             // Adjust the height initially
             adjustEditorHeightToScreen(this.editor);
-
-        }).catch(error => {
+        } catch (error) {
             // Handle any error that wasn't caught in GetNodeJSON
-        });
+            console.log("Error:" + error);
+        }
     }
+
 
     async UpdateVisualDisplay()
     {
@@ -100,7 +105,6 @@ class AdminDataEditor
 
     Save(relativePath)
     {
-        console.log(relativePath + " \n" + this.output.innerText);
         NodeJSON.SaveDataToFile(relativePath, this.output.innerText);
     }
 

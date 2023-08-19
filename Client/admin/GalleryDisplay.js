@@ -10,7 +10,6 @@ class GalleryDisplay {
     }
 
    display() {
-        console.log("display");
         const galleryContainer = document.createElement('div');
         galleryContainer.className = "container mt-5";
 
