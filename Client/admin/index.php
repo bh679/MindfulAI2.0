@@ -31,7 +31,7 @@ $roles = implode(', ', $current_user->roles);
         <h2>Gallery Data Output:</h2>
         <pre id="output"></pre>
 
-        <script src="DataManager.js"></script>
+        <script type="module" src="DataManager.js"></script>
     </div>
 </body>
 </html>

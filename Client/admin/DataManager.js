@@ -1,5 +1,8 @@
 //DataManager.js
 //https://chat.openai.com/share/5741dd6d-ce8f-4fbb-98a7-e0e609bc7c8a
+
+import { NodeJSON } from '../modules/NodeJSON/NodeJSON.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     fetch('https://mindfulai.equalreality.com:3000/jsonData?filename=GallerysData.json')
         .then(response => response.json())
@@ -25,14 +28,11 @@ function createButtons(galleries) {
 }
 
 function displayGalleryData(relativePath) {
-    const url = `https://mindfulai.equalreality.com:3000/jsonData?filename=${relativePath}`;
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            const output = document.getElementById('output');
-            output.textContent = JSON.stringify(data, null, 4);
-        })
-        .catch(error => {
-            console.error('Error fetching gallery data:', error);
-        });
+    // Usage:
+    NodeJSON.GetNodeJSON(relativePath).then(data => {
+        const output = document.getElementById('output');
+        output.textContent = JSON.stringify(data, null, 4);
+    }).catch(error => {
+        // Handle any error that wasn't caught in GetNodeJSON
+    });
 }
