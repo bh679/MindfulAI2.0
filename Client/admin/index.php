@@ -22,11 +22,11 @@ $roles = implode(', ', $current_user->roles);
     <script src="DataManager.js"></script>
 
 
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check WP Login Status</title>
 
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 </head>
 <body>
     <div>
@@ -37,8 +37,25 @@ $roles = implode(', ', $current_user->roles);
         <div id="buttonsContainer"></div>
 
         <h2>Gallery Data Output:</h2>
-        <button id="saveButton">save</button>
-        <pre contenteditable="true" id="jsonEditor"></pre>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Visual</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="txtEditor-tab" data-bs-toggle="tab" data-bs-target="#txtEditor" type="button" role="tab" aria-controls="txtEditor" aria-selected="true">Json</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="txtEditor" role="tabpanel" aria-labelledby="txtEditor-tab">
+              <button id="saveButton">save</button>
+              <pre contenteditable="true" id="jsonEditor"></pre>
+          </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        </div>
+
+        
 
         <script>
             var editor = ace.edit("jsonEditor");
@@ -91,9 +108,11 @@ $roles = implode(', ', $current_user->roles);
                 editor.container.style.height = availableHeight + 'px';
                 editor.resize();
             }
-
-
         </script>
+
+
+        <!-- Add Bootstrap JS and Popper.js -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </div>
 </body>
 </html>
