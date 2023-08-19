@@ -14,6 +14,7 @@ class AdminDataEditor
         this.currentJSON = "";
         this.gallery = {};
         this.galleryDisplay = {}
+        this.currentFile="";
     }
 
     Start()
@@ -33,6 +34,7 @@ class AdminDataEditor
             button.textContent = gallery.id;
             button.addEventListener('click', () => {
                 this.DisplayGalleryData(gallery.url);
+                this.currentFile = gallery.url;
                 this.saveButton.onclick = () => {
                     adminDataEditor.Save(gallery.url);
                 };
@@ -101,5 +103,19 @@ class AdminDataEditor
         console.log(relativePath + " \n" + this.output.innerText);
         NodeJSON.SaveDataToFile(relativePath, this.output.innerText);
     }
+
+    UpdatePaintingAndSave(painting, groupArrayIndex, paintingArrayIndex) {
+        // Access the specific group using groupArrayIndex
+        let targetGroup = this.currentJSON.paintingGroups[groupArrayIndex];
+
+        // Replace the painting in that group using paintingArrayIndex
+        targetGroup.paintings[paintingArrayIndex] = painting;
+
+        // Optional: Save the updated JSON to file.
+        // (Assuming you have a method to save the JSON)
+
+        NodeJSON.SaveDataToFile(this.currentFile, JSON.stringify(this.currentJSON));
+    }
+
 
 }
