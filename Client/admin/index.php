@@ -19,8 +19,11 @@ $roles = implode(', ', $current_user->roles);
 
     <script src="../modules/NodeJSON/NodeJSON.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-    <script src="DataManager.js"></script>
 
+    <script src="./GalleryDisplay.js"></script>
+    <script src="../js/GalleryDataManager.js"></script>
+
+    <script src="./DataManager.js"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,8 +54,7 @@ $roles = implode(', ', $current_user->roles);
               <button id="saveButton">save</button>
               <pre contenteditable="true" id="jsonEditor"></pre>
           </div>
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><div id="visualEditor"></div></div>
         </div>
 
         
@@ -75,30 +77,6 @@ $roles = implode(', ', $current_user->roles);
             var adminDataEditor = new AdminDataEditor(editor);
             adminDataEditor.Start();
 
-           //document.addEventListener('DOMContentLoaded', function() {
-           // });
-
-//            var jsonContent = editor.getValue();
-//            editor.setValue('{"example": "value"}', -1);  // -1 sets the cursor position to the start after setting value
-            /*function adjustEditorHeight(editor) {
-                var session = editor.getSession();
-                var newHeight = 0;
-                var lineHeight = editor.renderer.lineHeight;
-                
-                var editorWidth = editor.container.clientWidth;
-                var screenColumns = Math.floor(editorWidth / editor.renderer.characterWidth);
-                var lines = session.getDocument().getAllLines();
-                
-                for (var i = 0; i < lines.length; i++) {
-                    var screenRowsForLine = Math.ceil(lines[i].length / screenColumns);
-                    newHeight += screenRowsForLine * lineHeight;
-                }
-
-                // Set the height
-                editor.container.style.height = newHeight.toString() + 'px';
-                editor.resize();
-            }*/
-
             function adjustEditorHeightToScreen(editor) {
                 var viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
                 var editorOffset = editor.container.getBoundingClientRect().top;
@@ -108,6 +86,9 @@ $roles = implode(', ', $current_user->roles);
                 editor.container.style.height = availableHeight + 'px';
                 editor.resize();
             }
+
+
+
         </script>
 
 

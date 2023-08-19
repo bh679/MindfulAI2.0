@@ -3,18 +3,17 @@
 
 //import { NodeJSON } from '../modules/NodeJSON/NodeJSON.js';
 
-
-
 class AdminDataEditor
 {
-
 
     constructor(editor)
     {
         //this.output = document.getElementById('jsonEditor');
         this.editor = editor;
         this.saveButton = document.getElementById('saveButton');
-        this.currentJSON = ""
+        this.currentJSON = "";
+        this.gallery = {};
+        this.galleryDisplay = {}
     }
 
     Start()
@@ -44,10 +43,22 @@ class AdminDataEditor
     }
 
     DisplayGalleryData(relativePath) {
+
+            console.log("DisplayGalleryData");
+
         // Usage:
         NodeJSON.GetNodeJSON(relativePath).then(data => {
+
+            console.log("DisplayGalleryData2");
             this.currentJSON = data;
+            this.UpdateVisualDisplay();
+
+            console.log("DisplayGalleryData3");
             this.editor.setValue(JSON.stringify(data, null, 4));
+
+            console.log("DisplayGalleryData4");
+
+            console.log("gallery");
 
             // Adjust the height initially
             adjustEditorHeightToScreen(this.editor);
@@ -57,6 +68,33 @@ class AdminDataEditor
         });
     }
 
+    async UpdateVisualDisplay()
+    {
+
+            //set gallery data
+            this.gallery = new Gallery();       // Create a new gallery object.
+
+            // Populate the gallery with additional attributes.
+            this.gallery.setGalleryAttributes({
+              questionsToAsk: this.currentJSON.questionsToAsk,
+              wisdomToOffer: this.currentJSON.wisdomToOffer,
+              instructions: this.currentJSON.instructions,
+              Questions: this.currentJSON.Questions,
+              Wisdom: this.currentJSON.Wisdom
+            });
+
+            // Populate the gallery with groups of paintings.
+            this.currentJSON.paintingGroups.forEach(group => {
+              this.gallery.addPaintingGroup(group);
+            });
+
+            // You would use it like this:
+            // Assuming you've instantiated a gallery object named 'myGallery'
+            var parentDiv = document.getElementById('visualEditor');
+            parentDiv.innerHTML = "";
+            this.galleryDisplay = new GalleryDisplay(this.gallery, parentDiv);
+            this.galleryDisplay.display();
+    }
 
     Save(relativePath)
     {
