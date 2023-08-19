@@ -1,17 +1,24 @@
 //jsonHandler.js
-const fs = require('fs');
-const path = require('path');
+//https://chat.openai.com/share/5741dd6d-ce8f-4fbb-98a7-e0e609bc7c8a
 
-const sendJSON = (rootFolderPath, req, res) => {
-    const filePath = path.join(rootFolderPath, req.query.filename);
+import fs from 'fs';
+import path from 'path';
 
-    if (!filePath.startsWith(rootFolderPath)) {
+const sendJSON = (dataFolderPath, req, res) => {
+    const absoluteDataFolderPath = path.resolve(dataFolderPath);
+    const filePath = path.join(absoluteDataFolderPath, req.query.filename);
+
+    console.log("getting json data");
+
+    if (!filePath.startsWith(absoluteDataFolderPath)) {
+        console.log('Invalid file path ' + filePath);
         return res.status(400).send('Invalid file path');
     }
 
     try {
         const data = fs.readFileSync(filePath, 'utf8');
         const jsonData = JSON.parse(data);
+        console.log(jsonData);
         res.json(jsonData);
     } catch (error) {
         console.error(`Error reading file from disk: ${error}`);
@@ -19,10 +26,11 @@ const sendJSON = (rootFolderPath, req, res) => {
     }
 }
 
-const receiveAndStoreJSON = (rootFolderPath, req, res) => {
-    const filePath = path.join(rootFolderPath, req.query.filename);
+const receiveAndStoreJSON = (dataFolderPath, req, res) => {
+    const absoluteDataFolderPath = path.resolve(dataFolderPath);
+    const filePath = path.join(absoluteDataFolderPath, req.query.filename);
 
-    if (!filePath.startsWith(rootFolderPath)) {
+    if (!filePath.startsWith(absoluteDataFolderPath)) {
         return res.status(400).send('Invalid file path');
     }
 
@@ -44,8 +52,4 @@ const receiveAndStoreJSON = (rootFolderPath, req, res) => {
     }
 }
 
-
-module.exports = {
-    sendJSON,
-    receiveAndStoreJSON
-};
+export { sendJSON, receiveAndStoreJSON };

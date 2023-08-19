@@ -1,0 +1,12 @@
+{
+    "data": [
+        {
+            "id": "DharmaHall",
+            "url": "./DharmaHall.json"
+        },
+        {
+            "id": "DharmaInstruments",
+            "url": "./DharmaInstruments.json"
+        }
+    ]
+}

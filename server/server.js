@@ -25,7 +25,7 @@ import PromptGPT from './PromptGPT.js';
 import { Speak, ResetCache } from './ElevenLabsServer.js'; 
 import Transcribe from './WhisperTranscriberServer.js';
 import { textToSpeech, getStreamSize } from './azure-cognitiveservices-speech.js';
-import { sendJSON, receiveAndStoreJSON } from './jsonHandler';
+import { sendJSON, receiveAndStoreJSON } from './jsonHandler.js';
 
 
 // Use cors middleware for handling Cross-Origin Resource Sharing
@@ -126,13 +126,13 @@ app.post('/AskGPT', function (req, res) {
 });
 
 // Set rootFolderPath (Make sure this path is correct according to your directory structure)
-const rootFolderPath = '/path/to/your/root/folder';
+const dataFolderPath = './data';
 
 // Using sendJSON with rootFolderPath for the '/data' route
-app.get('/jsonData', (req, res) => sendJSON(rootFolderPath, req, res));
+app.get('/jsonData', (req, res) => sendJSON(dataFolderPath, req, res));
 
 // Using receiveAndStoreJSON with rootFolderPath for the '/data' route
-app.post('/jsonData', (req, res) => receiveAndStoreJSON(rootFolderPath, req, res));
+app.post('/jsonData', (req, res) => receiveAndStoreJSON(dataFolderPath, req, res));
 
 
 // Define the port and HTTPS server options
