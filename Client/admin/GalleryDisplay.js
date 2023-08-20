@@ -1,16 +1,18 @@
 //GalleryDisplay.js
 
 class GalleryDisplay {
-    constructor(gallery, parentDiv) {
+    constructor(gallery, parentDiv, galleryMetaData) {
         this.gallery = gallery;
         this.parentDiv = parentDiv;
         this.selectedDiv;
 
         this.selectedPaintingId = null;
         this.selectedGroupId = null;
+
+        this.galleryMetaData = galleryMetaData;
     }
 
-   display() {
+   display(galleryMetaData) {
         const galleryContainer = document.createElement('div');
         galleryContainer.className = "container mt-5";
 
@@ -21,8 +23,28 @@ class GalleryDisplay {
         const attributesCardBody = document.createElement('div');
         attributesCardBody.className = "card-body";
 
+
+        // Create Open Button
+        const liveBtn = document.createElement('button');
+        liveBtn.className = "btn btn-info mt-3";  // Initial class for disabled state
+        liveBtn.innerText = "View Live Gallery";
+
+        // The URL you want to open
+        const targetUrl = "../#"+galleryMetaData.id;  
+
+        liveBtn.addEventListener('click', () => {
+            window.open(targetUrl, '_blank');  // Opens the link in a new tab/window
+        });
+
+        // Attach the button to the document or a specific element if needed
+        attributesCard.appendChild(liveBtn);
+
+
         const galleryAttributes = document.createElement('div');
         attributesCard.appendChild(attributesCardBody);
+
+
+
 
         const labelInstructions = document.createElement('label');
         labelInstructions.innerText = "Instructions:";

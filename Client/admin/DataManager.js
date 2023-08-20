@@ -50,7 +50,7 @@ class AdminDataEditor
                 button.className = "btn btn-info mt-3";
                 button.disabled = true;
 
-                await this.DisplayGalleryData(gallery.url);
+                await this.DisplayGalleryData(gallery);
                 this.currentFile = gallery.url;
                 this.saveButton.onclick = () => {
                     adminDataEditor.Save(gallery.url);
@@ -152,12 +152,15 @@ class AdminDataEditor
     }
 
 
-    async DisplayGalleryData(relativePath) {
+    async DisplayGalleryData(galleryMetaData) {
+
+        var relativePath = galleryMetaData.url;
+
         try {
             const data = await NodeJSON.GetNodeJSON(relativePath);
 
             this.currentJSON = data;
-            this.UpdateVisualDisplay();
+            this.UpdateVisualDisplay(galleryMetaData);
 
 
             this.editor.setValue(JSON.stringify(data, null, 4));
@@ -171,7 +174,7 @@ class AdminDataEditor
     }
 
 
-    async UpdateVisualDisplay()
+    async UpdateVisualDisplay(galleryMetaData)
     {
 
             //set gallery data
@@ -195,8 +198,8 @@ class AdminDataEditor
             // Assuming you've instantiated a gallery object named 'myGallery'
             var parentDiv = document.getElementById('visualEditor');
             parentDiv.innerHTML = "";
-            this.galleryDisplay = new GalleryDisplay(this.gallery, parentDiv);
-            this.galleryDisplay.display();
+            this.galleryDisplay = new GalleryDisplay(this.gallery, parentDiv, galleryMetaData);
+            this.galleryDisplay.display(galleryMetaData);
     }
 
     async Save(relativePath)
