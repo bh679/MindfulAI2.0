@@ -263,8 +263,9 @@ class GalleryDisplay {
         cardBody.appendChild(cardPersonality);
 
         const saveBtn = document.createElement('button');
-        saveBtn.className = "btn btn-primary mt-3";
+        saveBtn.className = "btn mt-3";
         saveBtn.innerText = "Save";
+        saveBtn.disabled = true; // Initially disable the save button
         saveBtn.addEventListener('click', () => {
             const updatedPainting = this.getCurrentPaintingValues();
 
@@ -275,6 +276,19 @@ class GalleryDisplay {
 
             this.Deselect();
         });
+
+
+        function handleChange() {
+            saveBtn.disabled = false; // Enable the save button
+        saveBtn.className = "btn btn-success mt-3";
+        }
+
+        cardTitle.addEventListener('input', handleChange);
+        cardSubtitle.addEventListener('input', handleChange);
+        cardText.addEventListener('input', handleChange);
+        cardPersonality.addEventListener('input', handleChange);
+        cardUrl.addEventListener('input', handleChange);
+
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = "btn btn-warning mt-3";
@@ -291,10 +305,20 @@ class GalleryDisplay {
         });
 
 
-        cardBody.appendChild(saveBtn);
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.display = "flex";
+        buttonContainer.style.justifyContent = "space-between";  // this pushes children apart, so if there are only two buttons, one will be on the far left, the other on the far right
 
-        if(!newPainting)
-            cardBody.appendChild(deleteBtn);
+        // Add the save button to the container
+        buttonContainer.appendChild(saveBtn);
+
+        if (!newPainting) {
+            // Add the delete button to the container
+            buttonContainer.appendChild(deleteBtn);
+        }
+
+        // Add the button container to the card body
+        cardBody.appendChild(buttonContainer);
 
         card.appendChild(cardBody);
         col.appendChild(card);
@@ -313,7 +337,10 @@ class GalleryDisplay {
         parentRow.parentNode.insertBefore(this.selectedDiv, parentRow);
 
 
+
     }
+
+
 
     getCurrentPaintingValues() {
         const imageUrl = document.getElementById('selectedPaintingUrl').innerText;
