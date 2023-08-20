@@ -67,11 +67,11 @@ class GalleryDisplay {
             group.paintings.forEach((painting, paintingIndex) => {
                 // Create a column for each painting.
                 const col = document.createElement('div');
-                col.className = "col-md-4";
+                col.className = "col-md-2";
 
                 // Create Bootstrap card for each painting.
                 const card = document.createElement('div');
-                card.className = "card mb-4";
+                card.className = "card mb-2";
 
                  // Assign data attributes to store the IDs
                 card.dataset.groupId = groupIndex; 
@@ -112,10 +112,10 @@ class GalleryDisplay {
 
             // After processing all paintings in the group, add a 'Create New' painting card
             const addCol = document.createElement('div');
-            addCol.className = "col-md-4";
+            addCol.className = "col-md-2";
 
             const addCard = document.createElement('div');
-            addCard.className = "card mb-4 create-new-card";
+            addCard.className = "card mb-2 create-new-card";
 
             const addCardBody = document.createElement('div');
             addCardBody.className = "card-body text-center";
@@ -163,7 +163,7 @@ class GalleryDisplay {
 
         const labelStyle = "font-weight: bold;";
 
-        
+
         // If this.selectedDiv exists and it has a parent node, remove it from the parent.
         if (this.selectedDiv && this.selectedDiv.parentNode) {
             this.selectedDiv.parentNode.removeChild(this.selectedDiv);
@@ -172,8 +172,14 @@ class GalleryDisplay {
         const row = document.createElement('div');
         row.className = "row mb-5";
 
+
+        const col1 = document.createElement('div');
+        col1.className = "col-md-2";
+        const col2 = document.createElement('div');
+        col2.className = "col-md-2";
+
         const col = document.createElement('div');
-        col.className = "col-md-12";
+        col.className = "col-md-8";
 
         // Create Bootstrap card for the selected painting.
         const card = document.createElement('div');
@@ -266,7 +272,9 @@ class GalleryDisplay {
 
         card.appendChild(cardBody);
         col.appendChild(card);
+        row.appendChild(col1);
         row.appendChild(col);
+        row.appendChild(col2);
 
         this.selectedDiv = row;
 
