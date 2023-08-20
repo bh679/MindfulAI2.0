@@ -4,6 +4,7 @@ class GalleryDisplay {
     constructor(gallery, parentDiv) {
         this.gallery = gallery;
         this.parentDiv = parentDiv;
+        this.selectedDiv;
 
         this.selectedPaintingId = null;
         this.selectedGroupId = null;
@@ -82,7 +83,7 @@ class GalleryDisplay {
                     this.selectedPaintingId = card.dataset.paintingId;
 
                     // Then display the selected painting
-                    this.displaySelectedPainting(painting, selectedPaintingSection);
+                    this.displaySelectedPainting(painting, card);
                 });
 
                 const cardImg = document.createElement('img');
@@ -108,6 +109,48 @@ class GalleryDisplay {
                 row.appendChild(col);
             });
 
+
+            // After processing all paintings in the group, add a 'Create New' painting card
+            const addCol = document.createElement('div');
+            addCol.className = "col-md-4";
+
+            const addCard = document.createElement('div');
+            addCard.className = "card mb-4 create-new-card";
+
+            const addCardBody = document.createElement('div');
+            addCardBody.className = "card-body text-center";
+
+            const addButton = document.createElement('button');
+            addButton.className = "btn btn-outline-info";
+            addButton.textContent = "Create New Painting";
+
+
+            addCardBody.dataset.groupId = groupIndex; 
+
+            addButton.addEventListener('click', () => {
+                this.selectedGroupId = addCardBody.dataset.groupId;
+                // Here, you might want to generate a new ID based on the number of paintings or other criteria.
+                this.selectedPaintingId = group.paintings.length; // Assuming the ID can just be the next number
+
+                // Create a dummy new painting object. You can modify this based on your needs.
+                const newPainting = {
+                    imageUrl: '',
+                    title: '',
+                    artist: '',
+                    description: '',
+                    personality: ''
+                };
+                group.paintings.push(newPainting); // Add the new painting to the group
+
+                // Display the newly created painting as selected
+                this.displaySelectedPainting(newPainting, addCardBody);
+            });
+
+            addCardBody.appendChild(addButton);
+            addCard.appendChild(addCardBody);
+            addCol.appendChild(addCard);
+            row.appendChild(addCol);
+
             galleryContainer.appendChild(row);
         });
 
@@ -115,12 +158,16 @@ class GalleryDisplay {
         this.parentDiv.appendChild(galleryContainer);
     }
 
-    displaySelectedPainting(painting, container) {
+    displaySelectedPainting(painting, clickedCard) {
+
 
         const labelStyle = "font-weight: bold;";
 
-        // Clear the current content.
-        container.innerHTML = '';
+        
+        // If this.selectedDiv exists and it has a parent node, remove it from the parent.
+        if (this.selectedDiv && this.selectedDiv.parentNode) {
+            this.selectedDiv.parentNode.removeChild(this.selectedDiv);
+        }
 
         const row = document.createElement('div');
         row.className = "row mb-5";
@@ -140,6 +187,7 @@ class GalleryDisplay {
 
         const cardUrl = document.createElement('figcaption');
         cardUrl.className = "card-text small text-muted";
+        cardUrl.placeholder = "path/to/your/image_goes_here.jpg";
         cardUrl.id = 'selectedPaintingUrl';
         cardUrl.style.fontSize = "10px";
         cardUrl.contentEditable = "true";
@@ -158,6 +206,7 @@ class GalleryDisplay {
         const cardTitle = document.createElement('div'); // using div to make it block level
         cardTitle.contentEditable = "true";
         cardTitle.innerText = painting.title;
+        cardTitle.placeholder = "Artwork title here...";
         cardTitle.id = 'selectedPaintingTitle';
         cardBody.appendChild(cardTitle);
 
@@ -170,6 +219,7 @@ class GalleryDisplay {
         const cardSubtitle = document.createElement('div');
         cardSubtitle.contentEditable = "true";
         cardSubtitle.innerText = painting.artist;
+        cardSubtitle.placeholder = "Artist name here...";
         cardSubtitle.id = 'selectedPaintingArtist';
         cardBody.appendChild(cardSubtitle);
 
@@ -182,6 +232,7 @@ class GalleryDisplay {
         const cardText = document.createElement('div');
         cardText.contentEditable = "true";
         cardText.innerText = painting.description;
+        cardText.placeholder = "Desciption here...";
         cardText.id = 'selectedPaintingDescription';
         cardBody.appendChild(cardText);
 
@@ -194,6 +245,7 @@ class GalleryDisplay {
         const cardPersonality = document.createElement('div');
         cardPersonality.contentEditable = "true";
         cardPersonality.innerText = painting.personality;
+        cardPersonality.placeholder = "AI Personality here...";
         cardPersonality.id = 'selectedPaintingPersonality';
         cardBody.appendChild(cardPersonality);
 
@@ -201,7 +253,7 @@ class GalleryDisplay {
         saveBtn.className = "btn btn-primary mt-3";
         saveBtn.innerText = "Save";
         saveBtn.addEventListener('click', () => {
-            const updatedPainting = this.getCurrentPaintingValues(container);
+            const updatedPainting = this.getCurrentPaintingValues();
 
             adminDataEditor.UpdatePaintingAndSave(updatedPainting, this.selectedGroupId, this.selectedPaintingId);
             // Handle saving functionality here
@@ -216,12 +268,20 @@ class GalleryDisplay {
         col.appendChild(card);
         row.appendChild(col);
 
-        container.appendChild(row);
+        this.selectedDiv = row;
+
+        //container.appendChild(row);
+
+        // Identify the parent row of the clicked card
+        const parentRow = clickedCard.closest('.row');
+
+        // Insert the detailed view before this row
+        parentRow.parentNode.insertBefore(this.selectedDiv, parentRow);
 
 
     }
 
-    getCurrentPaintingValues(container) {
+    getCurrentPaintingValues() {
         const imageUrl = document.getElementById('selectedPaintingUrl').innerText;
         const title = document.getElementById('selectedPaintingTitle').innerText;
         const artist = document.getElementById('selectedPaintingArtist').innerText;
