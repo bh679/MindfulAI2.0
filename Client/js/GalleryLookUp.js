@@ -13,24 +13,29 @@ class DataFetcher {
     }
 
     async fetchData() {
+	    return NodeJSON.GetNodeJSON(this.url)
+	        .then(data => {
+	            console.log(data);
+	            const jsonData = data;
+	            const dataArray = jsonData.data; 
+	            console.log(dataArray);
 
-    	// Usage:
-	    NodeJSON.GetNodeJSON(this.url).then(data => {
-	        const jsonData = data;
-            const dataArray = jsonData.data; 
+	            // Convert the array to a dictionary, keyed by 'id'
+	            this.data = dataArray.reduce((acc, item) => {
+	                acc[item.id] = item;
+	                return acc;
+	            }, {});
 
-            // Convert the array to a dictionary, keyed by 'id'
-            this.data = dataArray.reduce((acc, item) => {
-                acc[item.id] = item;
-                return acc;
-            }, {});
+	            return this.data;
+	        })
+	        .catch(error => {
+	            // Handle any error that wasn't caught in GetNodeJSON
+	            console.error("There was a problem fetching the data:", error);
+	            // If you want to propagate the error to the calling function, rethrow it:
+	            throw error;
+	        });
+	}
 
-            return this.data;
-	    }).catch(error => {
-	        // Handle any error that wasn't caught in GetNodeJSON
-            console.error("There was a problem fetching the data:", error);
-	    });
-    }
 
     // Method to get data by ID
     getDataById() {

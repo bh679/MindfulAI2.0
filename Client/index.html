@@ -175,7 +175,7 @@
             const app = new MindfulAIApp();
 
             // Usage:
-            const url = "/GallerysData.json";
+            const url = "./GallerysData.json";
             const gallerysDataFetcher = new DataFetcher(url);
 
 
@@ -204,23 +204,20 @@
 
             async function Intro(delayTime)
             {
-                console.log("#######Intro#######");
                 chat.Reset();
                 SetArtGPT();
-                console.log("#######Intro1#######");
 
                 await delay(delayTime*1000);
                 chat.AddMessage(ArtGPT, "Hi! I am " + ArtGPT.name+".");
                 adjustMessageOpacity(); 
                 await delay(1000);
-                console.log("#######Intro2#######");
+
                 chat.AddMessage(ArtGPT, "Ask me anything!");
                 adjustMessageOpacity(); 
                 await delay(1000);
-                console.log("#######Intro3#######");
+
                 chat.AddMessage(ArtGPT, "You can ask me about what I am, my meaning or my purpose.");
                 adjustMessageOpacity(); 
-                console.log("#######Intro4#######");
             }
 
             function SetArtGPT()
@@ -232,6 +229,7 @@
             window.onload = function() {
 
                 gallerysDataFetcher.fetchData().then(async () => {
+                    console.log("$$$$$$$$$$");
                     const galGata = gallerysDataFetcher.getDataById();
                     console.log(galGata);  // Log the data for id "1"
                     if(galGata != null)
