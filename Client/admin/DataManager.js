@@ -134,7 +134,8 @@ class AdminDataEditor
 
         console.log(json);
 
-        NodeJSON.SaveDataToFile('GallerysData.json', JSON.stringify(json));
+        await NodeJSON.SaveDataToFile('GallerysData.json', JSON.stringify(json));
+        location.reload();
 
     }
 
@@ -186,9 +187,10 @@ class AdminDataEditor
             this.galleryDisplay.display();
     }
 
-    Save(relativePath)
+    async Save(relativePath)
     {
-        NodeJSON.SaveDataToFile(relativePath, this.output.innerText);
+        await NodeJSON.SaveDataToFile(relativePath, this.output.innerText);
+        location.reload();
     }
 
     UpdatePaintingAndSave(painting, groupArrayIndex, paintingArrayIndex) {
@@ -202,21 +204,47 @@ class AdminDataEditor
         // (Assuming you have a method to save the JSON)
 
         NodeJSON.SaveDataToFile(this.currentFile, JSON.stringify(this.currentJSON));
+        location.reload();
     }
 
-    DeletePaintingAndSave(groupArrayIndex, paintingArrayIndex) {
-    // Access the specific group using groupArrayIndex
-    let targetGroup = this.currentJSON.paintingGroups[groupArrayIndex];
+    async DeletePaintingAndSave(groupArrayIndex, paintingArrayIndex) {
+        // Access the specific group using groupArrayIndex
+        let targetGroup = this.currentJSON.paintingGroups[groupArrayIndex];
 
-    // Remove the painting in that group using paintingArrayIndex
-    if (targetGroup.paintings && targetGroup.paintings.length > paintingArrayIndex) {
-        targetGroup.paintings.splice(paintingArrayIndex, 1); // Removes the painting at the specified index
+        // Remove the painting in that group using paintingArrayIndex
+        if (targetGroup.paintings && targetGroup.paintings.length > paintingArrayIndex) {
+            targetGroup.paintings.splice(paintingArrayIndex, 1); // Removes the painting at the specified index
+        }
+
+        // Optional: Save the updated JSON to file.
+        // (Assuming you have a method to save the JSON)
+        await NodeJSON.SaveDataToFile(this.currentFile, JSON.stringify(this.currentJSON));
+        location.reload();
     }
 
-    // Optional: Save the updated JSON to file.
-    // (Assuming you have a method to save the JSON)
-    NodeJSON.SaveDataToFile(this.currentFile, JSON.stringify(this.currentJSON));
-}
+    async DeletePaintingAndSave()
+    {
+        console.log(this.currentFile);
+
+
+        var json = await NodeJSON.GetNodeJSON("GallerysData.json");
+        var galleries = json.data;
+        
+        for (const gallery of galleries) 
+        {
+            if(gallery.url == this.currentFile){
+                galleries.pop(gallery);
+            }
+        }
+
+        json.data = galleries;
+
+        console.log(json);
+
+        await NodeJSON.SaveDataToFile('GallerysData.json', JSON.stringify(json));
+        location.reload();
+
+    }
 
 
 

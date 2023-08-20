@@ -20,7 +20,7 @@ class NodeJSON {
     }
     
     // Method to save data to a file
-    static SaveDataToFile(filename, data) {
+    static async SaveDataToFile(filename, data) {
         const url = `${NodeJSON.BASE_URL}/saveJSONData`;
 
         const requestBody = {

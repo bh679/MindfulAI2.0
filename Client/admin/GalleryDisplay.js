@@ -63,9 +63,11 @@ class GalleryDisplay {
         deleteBtn.className = "btn btn-danger mt-3 ml-2";  // Added margin for space between buttons
         deleteBtn.innerText = "Delete";
         deleteBtn.addEventListener('click', () => {
-            const confirmation = window.confirm("Are you sure you want to delete?");
+            const confirmation = window.confirm("Do you want to delete the whole gallery?");
             if (confirmation) {
                 // Handle delete functionality here
+                adminDataEditor.DeletePaintingAndSave();
+                console.log(this.gallery);
             }
         });
 
@@ -80,12 +82,7 @@ class GalleryDisplay {
         // Add the delete button to the container
         buttonContainer.appendChild(deleteBtn);
         
-
-
         attributesCardBody.appendChild(buttonContainer);
-
-
-
 
         galleryContainer.appendChild(attributesCard);
 
