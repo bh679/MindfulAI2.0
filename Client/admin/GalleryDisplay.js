@@ -143,7 +143,7 @@ class GalleryDisplay {
                 group.paintings.push(newPainting); // Add the new painting to the group
 
                 // Display the newly created painting as selected
-                this.displaySelectedPainting(newPainting, addCardBody);
+                this.displaySelectedPainting(newPainting, addCardBody, true);
             });
 
             addCardBody.appendChild(addButton);
@@ -158,28 +158,34 @@ class GalleryDisplay {
         this.parentDiv.appendChild(galleryContainer);
     }
 
-    displaySelectedPainting(painting, clickedCard) {
+    Deselect()
+    {
+        // If this.selectedDiv exists and it has a parent node, remove it from the parent.
+        if (this.selectedDiv && this.selectedDiv.parentNode) {
+            this.selectedDiv.parentNode.removeChild(this.selectedDiv);
+        }
+    }
+
+    displaySelectedPainting(painting, clickedCard, newPainting = false) {
 
 
         const labelStyle = "font-weight: bold;";
 
 
         // If this.selectedDiv exists and it has a parent node, remove it from the parent.
-        if (this.selectedDiv && this.selectedDiv.parentNode) {
-            this.selectedDiv.parentNode.removeChild(this.selectedDiv);
-        }
+        this.Deselect();
 
         const row = document.createElement('div');
         row.className = "row mb-5";
 
 
-        const col1 = document.createElement('div');
-        col1.className = "col-md-2";
+       /* const col1 = document.createElement('div');
+        col1.className = "col-md-1";
         const col2 = document.createElement('div');
-        col2.className = "col-md-2";
+        col2.className = "col-md-1";*/
 
         const col = document.createElement('div');
-        col.className = "col-md-8";
+        col.className = "col-md-12";
 
         // Create Bootstrap card for the selected painting.
         const card = document.createElement('div');
@@ -189,6 +195,7 @@ class GalleryDisplay {
         cardImg.className = "card-img-top";
         cardImg.src = painting.imageUrl;
         cardImg.id = 'selectedPaintingImage';
+        cardImg.style.padding = "0 35% 0 35%";
         card.appendChild(cardImg);
 
         const cardUrl = document.createElement('figcaption');
@@ -265,16 +272,35 @@ class GalleryDisplay {
             // Handle saving functionality here
             // For now, we'll just console log the updated values
             console.log(updatedPainting);
+
+            this.Deselect();
+        });
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = "btn btn-warning mt-3";
+        deleteBtn.innerText = "Delete";
+        deleteBtn.addEventListener('click', () => {
+            const updatedPainting = this.getCurrentPaintingValues();
+
+            adminDataEditor.DeletePaintingAndSave(this.selectedGroupId, this.selectedPaintingId);
+            // Handle saving functionality here
+            // For now, we'll just console log the updated values
+            console.log(updatedPainting);
+
+            this.Deselect();
         });
 
 
         cardBody.appendChild(saveBtn);
 
+        if(!newPainting)
+            cardBody.appendChild(deleteBtn);
+
         card.appendChild(cardBody);
         col.appendChild(card);
-        row.appendChild(col1);
+        //row.appendChild(col1);
         row.appendChild(col);
-        row.appendChild(col2);
+        //row.appendChild(col2);
 
         this.selectedDiv = row;
 

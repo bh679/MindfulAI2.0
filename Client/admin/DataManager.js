@@ -121,5 +121,20 @@ class AdminDataEditor
         NodeJSON.SaveDataToFile(this.currentFile, JSON.stringify(this.currentJSON));
     }
 
+    DeletePaintingAndSave(groupArrayIndex, paintingArrayIndex) {
+    // Access the specific group using groupArrayIndex
+    let targetGroup = this.currentJSON.paintingGroups[groupArrayIndex];
+
+    // Remove the painting in that group using paintingArrayIndex
+    if (targetGroup.paintings && targetGroup.paintings.length > paintingArrayIndex) {
+        targetGroup.paintings.splice(paintingArrayIndex, 1); // Removes the painting at the specified index
+    }
+
+    // Optional: Save the updated JSON to file.
+    // (Assuming you have a method to save the JSON)
+    NodeJSON.SaveDataToFile(this.currentFile, JSON.stringify(this.currentJSON));
+}
+
+
 
 }
