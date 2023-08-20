@@ -48,6 +48,45 @@ class GalleryDisplay {
         galleryWisdom.innerText = this.gallery.Wisdom;
         attributesCardBody.appendChild(galleryWisdom);
 
+        // Create Save Button
+        const saveBtn = document.createElement('button');
+        saveBtn.className = "btn btn-secondary mt-3";  // Initial class for disabled state
+        saveBtn.innerText = "Save";
+        saveBtn.disabled = true;
+
+        saveBtn.addEventListener('click', () => {
+            // Handle saving functionality here
+        });
+
+        // Create Delete Button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = "btn btn-danger mt-3 ml-2";  // Added margin for space between buttons
+        deleteBtn.innerText = "Delete";
+        deleteBtn.addEventListener('click', () => {
+            const confirmation = window.confirm("Are you sure you want to delete?");
+            if (confirmation) {
+                // Handle delete functionality here
+            }
+        });
+
+        // Append buttons to the card body
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.display = "flex";
+        buttonContainer.style.justifyContent = "space-between";  // this pushes children apart, so if there are only two buttons, one will be on the far left, the other on the far right
+
+        // Add the save button to the container
+        buttonContainer.appendChild(saveBtn);
+
+        // Add the delete button to the container
+        buttonContainer.appendChild(deleteBtn);
+        
+
+
+        attributesCardBody.appendChild(buttonContainer);
+
+
+
+
         galleryContainer.appendChild(attributesCard);
 
         // Section to display the selected painting at the top
@@ -291,18 +330,24 @@ class GalleryDisplay {
 
 
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = "btn btn-warning mt-3";
+        deleteBtn.className = "btn btn-danger mt-3";
         deleteBtn.innerText = "Delete";
         deleteBtn.addEventListener('click', () => {
-            const updatedPainting = this.getCurrentPaintingValues();
+            const confirmation = window.confirm("Are you sure you want to delete this painting?");
 
-            adminDataEditor.DeletePaintingAndSave(this.selectedGroupId, this.selectedPaintingId);
-            // Handle saving functionality here
-            // For now, we'll just console log the updated values
-            console.log(updatedPainting);
+            if (confirmation) {
+                const updatedPainting = this.getCurrentPaintingValues();
 
-            this.Deselect();
+                adminDataEditor.DeletePaintingAndSave(this.selectedGroupId, this.selectedPaintingId);
+                
+                // Handle saving functionality here
+                // For now, we'll just console log the updated values
+                console.log(updatedPainting);
+
+                this.Deselect();
+            }
         });
+
 
 
         const buttonContainer = document.createElement('div');

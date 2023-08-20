@@ -52,8 +52,91 @@ class AdminDataEditor
             });
             container.appendChild(button);
         }
+
+        var inputDiv = this.CreateInput(container);
+        inputDiv.hidden = true;
+
+        const button = document.createElement('button');
+        button.textContent = "new";
+        button.className = "btn btn-info mt-3"; // Default class for buttons
+        button.addEventListener('click', async () => {
+            // Reset all buttons to default state
+            container.querySelectorAll('button').forEach(btn => {
+                btn.className = "btn btn-outline-info mt-3"; // Default class
+                btn.disabled = false; // Enable all buttons
+            });
+
+            inputDiv.hidden = false;
+            //button.hidden = true;
+            
+        });
+        container.appendChild(button);
+
+
+        container.appendChild(inputDiv);
     }
 
+    CreateInput(container)
+    {
+        // Create the main div element
+        const divInputGroup = document.createElement('div');
+        divInputGroup.className = 'input-group mb-3';
+
+        // Create the input element
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control';
+        input.placeholder = "Recipient's username";
+        input.setAttribute('aria-label', "Recipient's username");
+        input.setAttribute('aria-describedby', "basic-addon2");
+
+        // Append the input element to the main div
+        divInputGroup.appendChild(input);
+
+        // Create the div for the button
+        const divInputGroupAppend = document.createElement('div');
+        divInputGroupAppend.className = 'input-group-append';
+
+        // Create the button element
+        const button = document.createElement('button');
+        button.className = 'btn btn-outline-secondary';
+        button.type = 'button';
+        button.textContent = 'Button';
+        button.addEventListener('click', async () => {
+            
+            this.CreateNewGalleryFile(input.value);
+            divInputGroup.hidden = true;
+            
+        });
+
+        // Append the button to its div
+        divInputGroupAppend.appendChild(button);
+
+        // Append the button div to the main div
+        divInputGroup.appendChild(divInputGroupAppend);
+
+        // Finally, append the main div to the container
+        //const container = document.querySelector('.container'); // replace .container with your container's selector
+        return divInputGroup;
+    }
+
+    async CreateNewGalleryFile(name)
+    {
+        NodeJSON.SaveDataToFile(name + ".json", '{"paintingGroups": []}');
+
+        var gal = {};
+        gal.id = name;
+        gal.url = "./" + name + ".json";
+
+        var json = await NodeJSON.GetNodeJSON("GallerysData.json");
+        
+        json.data.push(gal);
+
+        console.log(json);
+
+        NodeJSON.SaveDataToFile('GallerysData.json', JSON.stringify(json));
+
+    }
 
 
     async DisplayGalleryData(relativePath) {
