@@ -36,12 +36,18 @@ class AdminDataEditor
             button.addEventListener('click', async () => {
                 // Reset all buttons to default state
                 container.querySelectorAll('button').forEach(btn => {
-                    btn.className = "btn btn-outline-info mt-3"; // Default class
+
+                    if(btn.id == "new-gallery-button")
+                        btn.className = "btn btn-outline-warning mt-3";
+                    else if(btn.id != "new-gallery-submit")
+                        btn.className = "btn btn-outline-info mt-3"; // Default class
                     btn.disabled = false; // Enable all buttons
+                    btn.hidden = false;
+                    inputDiv.hidden = true;
                 });
                 
                 // Set the current button to selected state
-                button.className = "btn btn-primary mt-3";
+                button.className = "btn btn-info mt-3";
                 button.disabled = true;
 
                 await this.DisplayGalleryData(gallery.url);
@@ -58,16 +64,21 @@ class AdminDataEditor
 
         const button = document.createElement('button');
         button.textContent = "new";
-        button.className = "btn btn-info mt-3"; // Default class for buttons
+        button.id = "new-gallery-button";
+        button.className = "btn btn-outline-warning mt-3"; // Default class for buttons
         button.addEventListener('click', async () => {
             // Reset all buttons to default state
             container.querySelectorAll('button').forEach(btn => {
-                btn.className = "btn btn-outline-info mt-3"; // Default class
+                if(btn.id != "new-gallery-button" && btn.id != "new-gallery-submit")
+                    btn.className = "btn btn-outline-info mt-3"; // Default class
                 btn.disabled = false; // Enable all buttons
+                btn.hidden = false;
+                inputDiv.hidden = true;
             });
 
+            button.className = "btn btn-warning mt-3";
             inputDiv.hidden = false;
-            //button.hidden = true;
+            button.disabled = true;
             
         });
         container.appendChild(button);
@@ -101,6 +112,7 @@ class AdminDataEditor
         const button = document.createElement('button');
         button.className = 'btn btn-outline-secondary';
         button.type = 'button';
+        button.id = "new-gallery-submit";
         button.textContent = 'Button';
         button.addEventListener('click', async () => {
             
