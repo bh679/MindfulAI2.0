@@ -13,3 +13,12 @@ Designed for MacOS, iOS, Windows and Android.
 ## ChatGPT Threads
 [Building Transcriber](https://chat.openai.com/share/ca60ea94-5709-4675-8563-96d220fa6b52)
 
+
+
+## Running
+
+Copy server to server
+chmod +x start.sh
+./start.sh
+
+Copy client to htdocs
