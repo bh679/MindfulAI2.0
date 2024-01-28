@@ -17,8 +17,9 @@ Designed for MacOS, iOS, Windows and Android.
 
 ## Running
 
-Copy server to server
-chmod +x start.sh
-./start.sh
+- Copy server to server
+- create/copy env.js
+- chmod +x start.sh
+- ./start.sh
 
-Copy client to htdocs
+- Copy client to htdocs
