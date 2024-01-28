@@ -22,4 +22,7 @@ Designed for MacOS, iOS, Windows and Android.
 - chmod +x start.sh
 - ./start.sh
 
+- chmod +x setup.sh
+- ./setup.sh
+
 - Copy client to htdocs
